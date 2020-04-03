@@ -19,18 +19,18 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
-  if status:
-    #set the LEDs to the relevant lighting (all on/off)
-    for y in range(height):
-      for x in range(width):
-        nextX = x + 1
-        if nextX > width :
-          nextX = 0
-        unicorn.set_pixel(x, y, r, g, b)
-        unicorn.set_pixel(nextX, y, 0, 0, 0)
-        unicorn.show()
-        sleep(.1)
-    setColor(r, g, b)
+	if status:
+		#set the LEDs to the relevant lighting (all on/off)
+		for y in range(height):
+			for x in range(width):
+				nextX = x + 1
+				if nextX > width :
+					nextX = 0
+				unicorn.set_pixel(x, y, r, g, b)
+				unicorn.set_pixel(nextX, y, 0, 0, 0)
+				unicorn.show()
+				sleep(.1)
+		setColor(r, g, b)
     
 
 def switchOn() :
@@ -52,9 +52,9 @@ def apiOn() :
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
-  status = False
+	status = False
 	switchOff()
-  return jsonify({})
+	return jsonify({})
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
