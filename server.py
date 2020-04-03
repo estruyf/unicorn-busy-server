@@ -20,8 +20,8 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
-  crntT = threading.currentThread()
-	while getattr(crntT, "do_run", True):
+	crntT = threading.currentThread()
+	while getattr(crntT, "do_run", True) :
 		for y in range(height):
 			for x in range(width):
 				unicorn.set_pixel(x, y, r, g, b)
@@ -32,8 +32,6 @@ def setColor(r, g, b) :
 		sleep(.15)
 		setColor(r, g, b)
 		
-    
-
 def switchOn() :
 	red = randint(10, 255)
 	green = randint(10, 255)
