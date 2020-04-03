@@ -20,32 +20,32 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
-	print("setColor")
-	#set the LEDs to the relevant lighting (all on/off)
-	for y in range(height):
-		for x in range(width):
-			unicorn.set_pixel(x, y, r, g, b)
-	unicorn.show()
-	sleep(.15)
-	unicorn.clear()
-	unicorn.show()
-	sleep(.15)
-	setColor(r, g, b)
+  crntT = threading.currentThread()
+	while getattr(crntT, "do_run", True):
+		for y in range(height):
+			for x in range(width):
+				unicorn.set_pixel(x, y, r, g, b)
+		unicorn.show()
+		sleep(.15)
+		unicorn.clear()
+		unicorn.show()
+		sleep(.15)
+		setColor(r, g, b)
 		
     
 
 def switchOn() :
-	global blinkThread
-	red = randint(30, 255)
-	green = randint(30, 255)
-	blue = randint(30, 255)
+	red = randint(10, 255)
+	green = randint(10, 255)
+	blue = randint(10, 255)
 	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	blinkThread.do_run = True
 	blinkThread.start()
 
 def switchOff() :
 	global blinkThread
 	if blinkThread != None :
-		blinkThread.join()
+		blinkThread.do_run = False
 	unicorn.clear()
 	unicorn.off()
 
@@ -70,6 +70,7 @@ def apiSwitch() :
 	green = content.get('green', '')
 	blue = content.get('blue', '')
 	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	blinkThread.do_run = True
 	blinkThread.start()
 	return make_response(jsonify())
 
