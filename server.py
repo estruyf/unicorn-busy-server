@@ -20,7 +20,7 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b, brightness, speed) :
-	if speed != '' :
+	if speed == '' :
 		speed = 0.5
 	if brightness != '' :
 		unicorn.brightness(brightness)
@@ -35,7 +35,7 @@ def setColor(r, g, b, brightness, speed) :
 		unicorn.clear()
 		unicorn.show()
 		sleep(speed)
-		setColor(r, g, b)
+		setColor(r, g, b, brightness, speed)
 		
 def switchOn() :
 	red = randint(10, 255)
