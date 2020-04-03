@@ -7,7 +7,7 @@ from time import sleep
 from flask import Flask, jsonify, make_response, request
 from random import randint
 
-status = false
+status = False
 
 #setup the unicorn hat
 unicorn.set_layout(unicorn.AUTO)
@@ -46,19 +46,19 @@ def switchOff() :
 
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
-  status = true
+  status = True
   switchOn()
-	return jsonify({})
+  return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
-  status = false
+  status = False
 	switchOff()
-	return jsonify({})
+  return jsonify({})
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
-  status = true
+	status = True
 	content = request.json
 	red = content.get('red', '')
 	green = content.get('green', '')
@@ -72,4 +72,4 @@ def not_found(error):
 	return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', debug=True)
+	app.run(host='0.0.0.0', debug=False)
