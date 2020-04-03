@@ -45,12 +45,12 @@ def switchOn() :
 
 def switchOff() :
 	global blinkThread
-	blinkThread.join()
+	if blinkThread != None :
+		blinkThread.join()
 	unicorn.clear()
 	unicorn.off()
 
-# API start
-
+# API Initialization
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
 	global status
