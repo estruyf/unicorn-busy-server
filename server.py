@@ -19,17 +19,22 @@ width, height = unicorn.get_shape()
 
 app = Flask(__name__)
 
-def setColor(r, g, b) :
+def setColor(r, g, b, brightness, speed) :
+	if speed != '' :
+		speed = 0.5
+	if brightness != '' :
+		unicorn.brightness(brightness)
+
 	crntT = threading.currentThread()
 	while getattr(crntT, "do_run", True) :
 		for y in range(height):
 			for x in range(width):
 				unicorn.set_pixel(x, y, r, g, b)
 		unicorn.show()
-		sleep(.15)
+		sleep(speed)
 		unicorn.clear()
 		unicorn.show()
-		sleep(.15)
+		sleep(speed)
 		setColor(r, g, b)
 		
 def switchOn() :
@@ -67,7 +72,9 @@ def apiSwitch() :
 	red = content.get('red', '')
 	green = content.get('green', '')
 	blue = content.get('blue', '')
-	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	brightness = content.get('brightness', '')
+	speed = content.get('speed', '')
+	blinkThread = threading.Thread(target=setColor, args=(red, green, blue, brightness, speed))
 	blinkThread.do_run = True
 	blinkThread.start()
 	return make_response(jsonify())
