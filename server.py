@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import time
 import json
 import unicornhat as unicorn
+from time import sleep
 
 from flask import Flask, jsonify, make_response, request
 from random import randint
@@ -19,33 +19,40 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
-	#set the LEDs to the relevant lighting (all on/off)
-	for y in range(height):
-		for x in range(width):
-      time.sleep(0.10)
-			unicorn.set_pixel(x,y,r,g,b)
-			unicorn.show()
+  if status:
+    #set the LEDs to the relevant lighting (all on/off)
+    for y in range(height):
+      for x in range(width):
+        nextX = x + 1
+        if nextX > width :
+          nextX = 0
+        unicorn.set_pixel(x, y, r, g, b)
+        unicorn.set_pixel(nextX, y, 0, 0, 0)
+        unicorn.show()
+        sleep(.1)
+    setColor(r, g, b)
+    
 
 def switchOn() :
-  status = true
 	r = randint(30, 255)
 	g = randint(30, 255)
 	b = randint(30, 255)
 	setColor(r, g, b)
 
 def switchOff() :
-  status = false
 	unicorn.off()
 
 # API start
 
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
+  status = true
 	switchOn()
 	return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
+  status = false
 	switchOff()
 	return jsonify({})
 
