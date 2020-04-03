@@ -47,7 +47,7 @@ def switchOff() :
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
   status = true
-	switchOn()
+  switchOn()
 	return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
