@@ -49,21 +49,21 @@ def switchOff() :
 
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
-  global status
+	global status
 	status = True
-  switchOn()
-  return jsonify({})
+	switchOn()
+	return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
-  global status
+	global status
 	status = False
 	switchOff()
 	return jsonify({})
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
-  global status
+	global status
 	status = True
 	content = request.json
 	red = content.get('red', '')
