@@ -31,11 +31,10 @@ def setColor(r, g, b, brightness, speed) :
 		unicorn.show()
 		if speed != '' :
 			sleep(speed)
-		unicorn.clear()
-		unicorn.show()
-		if speed != '' :
+			unicorn.clear()
+			unicorn.show()
 			sleep(speed)
-		setColor(r, g, b, brightness, speed)
+			setColor(r, g, b, brightness, speed)
 		
 def switchOn() :
 	red = randint(10, 255)
