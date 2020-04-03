@@ -19,6 +19,7 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
+	global status
 	print("Status", status)
 	if status == True :
 		#set the LEDs to the relevant lighting (all on/off)
@@ -48,18 +49,21 @@ def switchOff() :
 
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
-  status = True
+  global status
+	status = True
   switchOn()
   return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
+  global status
 	status = False
 	switchOff()
 	return jsonify({})
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
+  global status
 	status = True
 	content = request.json
 	red = content.get('red', '')
