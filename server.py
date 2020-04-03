@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+import time
+import json
+import unicornhat as unicorn
+
+from flask import Flask, jsonify, make_response, request
+from random import randint
+
+status = false
+
+#setup the unicorn hat
+unicorn.set_layout(unicorn.AUTO)
+unicorn.brightness(0.5)
+
+#get the width and height of the hardware
+width, height = unicorn.get_shape()
+
+app = Flask(__name__)
+
+def setColor(r, g, b) :
+	#set the LEDs to the relevant lighting (all on/off)
+	for y in range(height):
+		for x in range(width):
+      time.sleep(0.10)
+			unicorn.set_pixel(x,y,r,g,b)
+			unicorn.show()
+
+def switchOn() :
+  status = true
+	r = randint(30, 255)
+	g = randint(30, 255)
+	b = randint(30, 255)
+	setColor(r, g, b)
+
+def switchOff() :
+  status = false
+	unicorn.off()
+
+# API start
+
+@app.route('/api/on', methods=['GET'])
+def apiOn() :
+	switchOn()
+	return jsonify({})
+
+@app.route('/api/off', methods=['GET'])
+def apiOff() :
+	switchOff()
+	return jsonify({})
+
+@app.route('/api/switch', methods=['POST'])
+def apiSwitch() :
+  status = true
+	content = request.json
+	red = content.get('red', '')
+	green = content.get('green', '')
+	blue = content.get('blue', '')
+	setColor(red, green, blue)
+	return make_response(jsonify())
+
+
+@app.errorhandler(404)
+def not_found(error):
+	return make_response(jsonify({'error': 'Not found'}), 404)
+
+if __name__ == '__main__':
+	app.run(host='0.0.0.0', debug=True)
