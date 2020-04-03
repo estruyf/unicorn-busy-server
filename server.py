@@ -20,17 +20,16 @@ app = Flask(__name__)
 
 def setColor(r, g, b) :
 	global status
-	print("Status", status)
 	if status == True :
 		#set the LEDs to the relevant lighting (all on/off)
 		for y in range(height):
 			for x in range(width):
-				nextX = x + 1
-				if nextX > width :
-					nextX = 0
-				print("nextX", nextX)
+				nextY = y + 1
+				if nextY > height :
+					nextY = 0
+				print("nextY", nextY, "y", y)
 				unicorn.set_pixel(x, y, r, g, b)
-				unicorn.set_pixel(nextX, y, 50, 50, 50)
+				unicorn.set_pixel(x, nextY, 50, 50, 50)
 				unicorn.show()
 				sleep(.1)
 		setColor(r, g, b)
