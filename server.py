@@ -2,12 +2,14 @@
 
 import json
 import unicornhat as unicorn
+import threading
 from time import sleep
 
 from flask import Flask, jsonify, make_response, request
 from random import randint
 
 status = False
+blinkThread = None
 
 #setup the unicorn hat
 unicorn.set_layout(unicorn.AUTO)
@@ -24,24 +26,27 @@ def setColor(r, g, b) :
 		#set the LEDs to the relevant lighting (all on/off)
 		for y in range(height):
 			for x in range(width):
-				nextY = y + 1
-				if nextY > height :
-					nextY = 0
-				print("nextY", nextY, "y", y)
 				unicorn.set_pixel(x, y, r, g, b)
-				unicorn.set_pixel(x, nextY, 50, 50, 50)
-				unicorn.show()
-				sleep(.1)
+		unicorn.show()
+		sleep(.15)
+		unicorn.clear()
+		unicorn.show()
+		sleep(.15)
 		setColor(r, g, b)
     
 
 def switchOn() :
-	r = randint(30, 255)
-	g = randint(30, 255)
-	b = randint(30, 255)
-	setColor(r, g, b)
+	global blinkThread
+	red = randint(30, 255)
+	green = randint(30, 255)
+	blue = randint(30, 255)
+	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	blinkThread.start()
 
 def switchOff() :
+	global blinkThread
+	blinkThread.join()
+	unicorn.clear()
 	unicorn.off()
 
 # API start
@@ -50,6 +55,7 @@ def switchOff() :
 def apiOn() :
 	global status
 	status = True
+	switchOff()
 	switchOn()
 	return jsonify({})
 
@@ -63,12 +69,15 @@ def apiOff() :
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
 	global status
+	global blinkThread
+	switchOff()
 	status = True
 	content = request.json
 	red = content.get('red', '')
 	green = content.get('green', '')
 	blue = content.get('blue', '')
-	setColor(red, green, blue)
+	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	blinkThread.start()
 	return make_response(jsonify())
 
 
