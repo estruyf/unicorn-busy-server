@@ -41,7 +41,7 @@ def switchOn() :
 	red = randint(10, 255)
 	green = randint(10, 255)
 	blue = randint(10, 255)
-	blinkThread = threading.Thread(target=setColor, args=(red, green, blue))
+	blinkThread = threading.Thread(target=setColor, args=(red, green, blue, '', ''))
 	blinkThread.do_run = True
 	blinkThread.start()
 
