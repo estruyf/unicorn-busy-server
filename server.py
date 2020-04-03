@@ -8,7 +8,6 @@ from time import sleep
 from flask import Flask, jsonify, make_response, request
 from random import randint
 
-status = False
 blinkThread = None
 
 #setup the unicorn hat
@@ -22,17 +21,18 @@ app = Flask(__name__)
 
 def setColor(r, g, b) :
 	global status
-	if status == True :
-		#set the LEDs to the relevant lighting (all on/off)
-		for y in range(height):
-			for x in range(width):
-				unicorn.set_pixel(x, y, r, g, b)
-		unicorn.show()
-		sleep(.15)
-		unicorn.clear()
-		unicorn.show()
-		sleep(.15)
-		setColor(r, g, b)
+	print("status", status)
+	#set the LEDs to the relevant lighting (all on/off)
+	for y in range(height):
+		for x in range(width):
+			unicorn.set_pixel(x, y, r, g, b)
+	unicorn.show()
+	sleep(.15)
+	unicorn.clear()
+	unicorn.show()
+	sleep(.15)
+	setColor(r, g, b)
+		
     
 
 def switchOn() :
@@ -54,7 +54,6 @@ def switchOff() :
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
 	global status
-	status = True
 	switchOff()
 	switchOn()
 	return jsonify({})
@@ -62,7 +61,6 @@ def apiOn() :
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
 	global status
-	status = False
 	switchOff()
 	return jsonify({})
 
@@ -71,7 +69,6 @@ def apiSwitch() :
 	global status
 	global blinkThread
 	switchOff()
-	status = True
 	content = request.json
 	red = content.get('red', '')
 	green = content.get('green', '')
