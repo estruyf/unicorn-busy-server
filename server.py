@@ -19,6 +19,7 @@ width, height = unicorn.get_shape()
 app = Flask(__name__)
 
 def setColor(r, g, b) :
+	print("Status", status)
 	if status == True :
 		#set the LEDs to the relevant lighting (all on/off)
 		for y in range(height):
@@ -26,8 +27,9 @@ def setColor(r, g, b) :
 				nextX = x + 1
 				if nextX > width :
 					nextX = 0
+				print("nextX", nextX)
 				unicorn.set_pixel(x, y, r, g, b)
-				unicorn.set_pixel(nextX, y, 0, 0, 0)
+				unicorn.set_pixel(nextX, y, 50, 50, 50)
 				unicorn.show()
 				sleep(.1)
 		setColor(r, g, b)
