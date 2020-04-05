@@ -3,12 +3,11 @@ Description=BusyLight
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 -u server.py
-WorkingDirectory=/home/dietpi/unicorn-busy-server
-StandardOutput=inherit
-StandardError=inherit
+User=pi
+WorkingDirectory=/home/pi/unicorn-busy-server
+ExecStart=python3 server.py
 Restart=always
-User=busylight
+Environment=FLASK_CONFIG=production
 
 [Install]
 WantedBy=multi-user.target

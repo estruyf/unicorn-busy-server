@@ -4,6 +4,3 @@ sudo pip3 install -r ./requirements.txt
 
 # Change permissions of the start up script
 sudo chmod +x ./start.sh
-
-# Copy service
-sudo cp busylight.service /etc/systemd/system/busylight.service

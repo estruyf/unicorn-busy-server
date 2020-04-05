@@ -23,18 +23,24 @@ def setColor(r, g, b, brightness, speed) :
 	if brightness != '' :
 		unicorn.brightness(brightness)
 
-	crntT = threading.currentThread()
-	while getattr(crntT, "do_run", True) :
-		for y in range(height):
-			for x in range(width):
-				unicorn.set_pixel(x, y, r, g, b)
-		unicorn.show()
-		if speed != '' :
+	for y in range(height):
+		for x in range(width):
+			unicorn.set_pixel(x, y, r, g, b)
+	unicorn.show()
+
+	if speed != '' :
+		sleep(speed)
+		unicorn.clear()
+		crntT = threading.currentThread()
+		while getattr(crntT, "do_run", True) :
+			for y in range(height):
+				for x in range(width):
+					unicorn.set_pixel(x, y, r, g, b)
+			unicorn.show()
 			sleep(speed)
 			unicorn.clear()
 			unicorn.show()
 			sleep(speed)
-			setColor(r, g, b, brightness, speed)
 		
 def switchOn() :
 	red = randint(10, 255)
