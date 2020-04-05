@@ -1,0 +1,14 @@
+[Unit]
+Description=BusyLight
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u server.py
+WorkingDirectory=/home/dietpi/unicorn-busy-server
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=busylight
+
+[Install]
+WantedBy=multi-user.target
