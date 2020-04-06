@@ -4,6 +4,7 @@ import json
 import unicornhat as unicorn
 import threading
 from time import sleep
+from datetime import datetime
 
 from flask import Flask, jsonify, make_response, request
 from random import randint
@@ -11,7 +12,8 @@ from random import randint
 blinkThread = None
 globalRed = 0
 globalGreen = 0
-globalBlue = 0
+globalBlue = 0,
+globalLastCalled = None
 
 #setup the unicorn hat
 unicorn.set_layout(unicorn.AUTO)
@@ -68,6 +70,10 @@ def switchOff() :
 	unicorn.clear()
 	unicorn.off()
 
+def setTimestamp() :
+	global globalLastCalled
+	globalLastCalled = datetime.now()
+
 # API Initialization
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
@@ -99,8 +105,8 @@ def apiSwitch() :
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus() :
-	global globalBlue, globalGreen, globalRed
-	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue })
+	global globalBlue, globalGreen, globalRed, globalLastCalled
+	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue, 'lastCalled': globalLastCalled })
 
 
 @app.errorhandler(404)
