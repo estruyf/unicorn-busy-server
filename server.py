@@ -9,6 +9,8 @@ from flask import Flask, jsonify, make_response, request
 from random import randint
 
 blinkThread = None
+initColors = '{ "red": 0, "green": 0, "red": 0 }'
+crntColors = json.loads(initColors)
 
 #setup the unicorn hat
 unicorn.set_layout(unicorn.AUTO)
@@ -22,6 +24,11 @@ app = Flask(__name__)
 def setColor(r, g, b, brightness, speed) :
 	if brightness != '' :
 		unicorn.brightness(brightness)
+
+	global crntColors
+	crntColors["red"] = r
+	crntColors["green"] = g
+	crntColors["blue"] = b
 
 	for y in range(height):
 		for x in range(width):
@@ -52,8 +59,12 @@ def switchOn() :
 
 def switchOff() :
 	global blinkThread
+	global crntColors
 	if blinkThread != None :
 		blinkThread.do_run = False
+	crntColors["red"] = 0
+	crntColors["green"] = 0
+	crntColors["blue"] = 0
 	unicorn.clear()
 	unicorn.off()
 
@@ -66,6 +77,8 @@ def apiOn() :
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
+	global crntColors
+	crntColors = None
 	switchOff()
 	return jsonify({})
 
@@ -83,6 +96,11 @@ def apiSwitch() :
 	blinkThread.do_run = True
 	blinkThread.start()
 	return make_response(jsonify())
+
+@app.route('/api/status', methods=['GET'])
+def apiStatus() :
+	global crntColors
+	return jsonify(crntColors)
 
 
 @app.errorhandler(404)
