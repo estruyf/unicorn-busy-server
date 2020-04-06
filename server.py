@@ -9,7 +9,7 @@ from flask import Flask, jsonify, make_response, request
 from random import randint
 
 blinkThread = None
-initColors = '{ "red": 0, "green": 0, "red": 0 }'
+initColors = '{ "red": 0, "green": 0, "blue": 0 }'
 crntColors = json.loads(initColors)
 
 #setup the unicorn hat
