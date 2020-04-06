@@ -12,7 +12,7 @@ from random import randint
 blinkThread = None
 globalRed = 0
 globalGreen = 0
-globalBlue = 0,
+globalBlue = 0
 globalLastCalled = None
 
 #setup the unicorn hat
@@ -79,6 +79,7 @@ def setTimestamp() :
 def apiOn() :
 	switchOff()
 	switchOn()
+	setTimestamp()
 	return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
@@ -86,6 +87,7 @@ def apiOff() :
 	global crntColors
 	crntColors = None
 	switchOff()
+	setTimestamp()
 	return jsonify({})
 
 @app.route('/api/switch', methods=['POST'])
@@ -101,6 +103,7 @@ def apiSwitch() :
 	blinkThread = threading.Thread(target=setColor, args=(red, green, blue, brightness, speed))
 	blinkThread.do_run = True
 	blinkThread.start()
+	setTimestamp()
 	return make_response(jsonify())
 
 @app.route('/api/status', methods=['GET'])
