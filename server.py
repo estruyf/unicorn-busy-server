@@ -100,7 +100,7 @@ def apiSwitch() :
 @app.route('/api/status', methods=['GET'])
 def apiStatus() :
 	global globalBlue, globalGreen, globalRed
-	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue', globalBlue })
+	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue })
 
 
 @app.errorhandler(404)
