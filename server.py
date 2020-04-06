@@ -5,6 +5,7 @@ import unicornhat as unicorn
 import threading
 from time import sleep
 from datetime import datetime
+from gpiozero import CPUTemperature
 
 from flask import Flask, jsonify, make_response, request
 from random import randint
@@ -14,6 +15,7 @@ globalRed = 0
 globalGreen = 0
 globalBlue = 0
 globalLastCalled = None
+globalLastCalledApi = None
 
 #setup the unicorn hat
 unicorn.set_layout(unicorn.AUTO)
@@ -77,6 +79,8 @@ def setTimestamp() :
 # API Initialization
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
+	global globalLastCalledApi
+	globalLastCalledApi = '/api/on'
 	switchOff()
 	switchOn()
 	setTimestamp()
@@ -84,7 +88,8 @@ def apiOn() :
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
-	global crntColors
+	global crntColors, globalLastCalledApi
+	globalLastCalledApi = '/api/off'
 	crntColors = None
 	switchOff()
 	setTimestamp()
@@ -92,7 +97,8 @@ def apiOff() :
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
-	global blinkThread
+	global blinkThread, globalLastCalledApi
+	globalLastCalledApi = '/api/switch'
 	switchOff()
 	content = request.json
 	red = content.get('red', '')
@@ -108,8 +114,8 @@ def apiSwitch() :
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus() :
-	global globalBlue, globalGreen, globalRed, globalLastCalled
-	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue, 'lastCalled': globalLastCalled })
+	global globalBlue, globalGreen, globalRed, globalLastCalled, globalLastCalledApi
+	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue, 'lastCalled': globalLastCalled, 'cpuTemp', 'cpu': CPUTemperature(), 'lastCalledApi': globalLastCalledApi })
 
 
 @app.errorhandler(404)
