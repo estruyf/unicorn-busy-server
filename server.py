@@ -83,40 +83,30 @@ def setColor(icon, r, g, b, brightness, speed) :
 			unicorn.show()
 			sleep(speed)
 		
-def dnd(r, g, b):
-	unicorn.set_pixel(0,0,0,0,0)
-	unicorn.set_pixel(0,1,r,g,b)
-	unicorn.set_pixel(0,2,r,g,b)
-	unicorn.set_pixel(0,3,0,0,0)
-	unicorn.set_pixel(1,0,r,g,b)
-	unicorn.set_pixel(1,1,r,g,b)
-	unicorn.set_pixel(1,2,r,g,b)
-	unicorn.set_pixel(1,3,r,g,b)
-	unicorn.set_pixel(2,0,r,g,b)
-	unicorn.set_pixel(2,1,r,g,b)
-	unicorn.set_pixel(2,2,r,g,b)
-	unicorn.set_pixel(2,3,r,g,b)
-	unicorn.set_pixel(3,0,255,255,255)
-	unicorn.set_pixel(3,1,255,255,255)
-	unicorn.set_pixel(3,2,255,255,255)
-	unicorn.set_pixel(3,3,255,255,255)
-	unicorn.set_pixel(4,0,255,255,255)
-	unicorn.set_pixel(4,1,255,255,255)
-	unicorn.set_pixel(4,2,255,255,255)
-	unicorn.set_pixel(4,3,255,255,255)
-	unicorn.set_pixel(5,0,r,g,b)
-	unicorn.set_pixel(5,1,r,g,b)
-	unicorn.set_pixel(5,2,r,g,b)
-	unicorn.set_pixel(5,3,r,g,b)
-	unicorn.set_pixel(6,0,r,g,b)
-	unicorn.set_pixel(6,1,r,g,b)
-	unicorn.set_pixel(6,2,r,g,b)
-	unicorn.set_pixel(6,3,r,g,b)
-	unicorn.set_pixel(7,0,0,0,0)
-	unicorn.set_pixel(7,1,r,g,b)
-	unicorn.set_pixel(7,2,r,g,b)
-	unicorn.set_pixel(7,3,0,0,0)
+def readJson(file, r, g, b):
+	f = open(file, "r")
+	j= json.loads(f.read())
+        globalIcon = j['name']
+        for x in range(len(j['pixels'])):
+                for y in range(len(j['pixels'][x])):
+                        pixel = j['pixels'][x][y]
+                        if pixel['red'] == -1:
+                                red = r
+                        else
+                                red = pixel['red']
+                        if pixel['green'] == -1:
+                                green = g
+                        else
+                                green = pixel['green']
+                        if pixel['blue'] == -1:
+                                blue = b
+                        else
+                                blue = pixel['blue']
+                        unicorn.set_pixel(x, y, red, green, blue)
 
+def dnd(r, g, b):
+        readJson("icons/dnd.json", r, g, b)
+        
 def phone(r, g, b):
 	unicorn.set_pixel(0,0,0,0,0)
 	unicorn.set_pixel(0,1,0,0,0)
