@@ -84,29 +84,29 @@ def setColor(icon, r, g, b, brightness, speed) :
 			sleep(speed)
 		
 def readJson(file, r, g, b):
-	f = open(file, "r")
-	j= json.loads(f.read())
-        globalIcon = j['name']
-        for x in range(len(j['pixels'])):
+    f = open(file, "r")
+    j= json.loads(f.read())
+    globalIcon = j['name']
+    for x in range(len(j['pixels'])):
                 for y in range(len(j['pixels'][x])):
                         pixel = j['pixels'][x][y]
                         if pixel['red'] == -1:
                                 red = r
-                        else
+                        else:
                                 red = pixel['red']
                         if pixel['green'] == -1:
                                 green = g
-                        else
+                        else:
                                 green = pixel['green']
                         if pixel['blue'] == -1:
                                 blue = b
-                        else
+                        else:
                                 blue = pixel['blue']
                         unicorn.set_pixel(x, y, red, green, blue)
 
 def dnd(r, g, b):
-        readJson("icons/dnd.json", r, g, b)
-        
+	readJson("icons/dnd.json", r, g, b)
+		
 def phone(r, g, b):
 	unicorn.set_pixel(0,0,0,0,0)
 	unicorn.set_pixel(0,1,0,0,0)
@@ -228,7 +228,7 @@ def switchOff() :
 	unicorn.off()
 
 def shutdownPi() :
-        os.system("shutdown /s /t 1")
+		os.system("shutdown /s /t 1")
 
 def setTimestamp() :
 	global globalLastCalled
@@ -253,10 +253,10 @@ def apiOff() :
 	setTimestamp()
 	return jsonify({})
 
-@app.route('/api/shutdown', method=['DELETE'])
+@app.route('/api/shutdown', methods=['DELETE'])
 def turnOff() :
-        switchOff()
-        shutdownPi()
+		switchOff()
+		shutdownPi()
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch() :
@@ -264,12 +264,13 @@ def apiSwitch() :
 	globalLastCalledApi = '/api/switch'
 	switchOff()
 	content = request.json
+	icon = content.get('icon', '')
 	red = content.get('red', '')
 	green = content.get('green', '')
 	blue = content.get('blue', '')
 	brightness = content.get('brightness', '')
 	speed = content.get('speed', '')
-	blinkThread = threading.Thread(target=setColor, args=(red, green, blue, brightness, speed))
+	blinkThread = threading.Thread(target=setColor, args=(icon, red, green, blue, brightness, speed))
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()
