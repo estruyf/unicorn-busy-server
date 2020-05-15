@@ -255,8 +255,6 @@ def setTimestamp() :
 	global globalLastCalled
 	globalLastCalled = datetime.now()
 
-def set
-
 # API Initialization
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
@@ -305,9 +303,9 @@ def apiSwitchHsv():
 	globalLastCalledApi = '/api/switch/hsv'
 	switchOff()
 	content = request.json
-	h = content.get('hue', 180)
-	s = content.get('saturation', 100)
-	v = content.get('value', 100)
+	h = content.get('hue', 180) / 360
+	s = content.get('saturation', 100) /100
+	v = content.get('value', 100) / 100
 	rgb = tuple(round(i * 255) for i in colorsys.hsv_to_rgb(h,s,v))
 	brightness = content.get('brightness', 0.5)
 	speed = content.get('speed', '')
