@@ -1,5 +1,5 @@
 {
-    "name": "1",
+    "name": "7",
     "author": "Jamie Maynard",
     "size": {
         "height":  8,
@@ -7,26 +7,20 @@
     },
     "pixels": [
         [
-            {"red": 0, "green": 0, "blue": 0},
             {"red": -1, "green": -1, "blue": -1},
-            {"red": 0, "green": 0, "blue": 0},
-            {"red": 0, "green": 0, "blue": 0}
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1}
         ],
         [
             {"red": -1, "green": -1, "blue": -1},
-            {"red": -1, "green": -1, "blue": -1},
             {"red": 0, "green": 0, "blue": 0},
-			{"red": 0, "green": 0, "blue": 0}
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1}
         ],
         [
-            {"red": 0, "green": 0, "blue": 0},
             {"red": -1, "green": -1, "blue": -1},
             {"red": 0, "green": 0, "blue": 0},
-            {"red": 0, "green": 0, "blue": 0}
-        ],
-        [
-            {"red": 0, "green": 0, "blue": 0},
-            {"red": -1, "green": -1, "blue": -1},
             {"red": 0, "green": 0, "blue": 0},
             {"red": 0, "green": 0, "blue": 0}
         ],
@@ -43,8 +37,14 @@
             {"red": 0, "green": 0, "blue": 0}
         ],
         [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
             {"red": -1, "green": -1, "blue": -1},
-            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
             {"red": -1, "green": -1, "blue": -1},
             {"red": 0, "green": 0, "blue": 0}
         ],

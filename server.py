@@ -35,6 +35,7 @@ class UnicornWrapper:
             self.type = hat
             self.hat.set_layout(unicornhat.PHAT)
             self.hat.brightness(0.5)
+            self.hat.rotation(90)
         elif hat == 'mini':
             self.hat = UnicornHATMini()
             self.type = hat
