@@ -6,6 +6,7 @@ import json
 import unicornhat
 import threading
 import glob
+import colorsys
 from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
@@ -211,6 +212,9 @@ def countDown(time):
         setPixels(zero, 255, 255, 0, 0.5)
         halfBlink()
         setDisplay('', 255, 0, 0, 0.5, 1)
+        halfBlink()
+        unicorn.clear()
+        unicorn.off()
 
 def getIcon(icon):
         try:
@@ -249,6 +253,8 @@ def shutdownPi() :
 def setTimestamp() :
 	global globalLastCalled
 	globalLastCalled = datetime.now()
+
+def set
 
 # API Initialization
 @app.route('/api/on', methods=['GET'])
@@ -291,10 +297,30 @@ def getIcons():
                 icons.append(file.split('/')[len(file.split('/'))-1].split('.')[0])
         return make_response(jsonify(icons))
 
-@app.route('/api/switch', methods=['POST'])
-def apiSwitch() :
+# This method is added for homekit compatibility
+@app.route('/api/switch/hsv', methods=['POST'])
+def apiSwitchHsv() :
 	global blinkThread, globalLastCalledApi
-	globalLastCalledApi = '/api/switch'
+	globalLastCalledApi = '/api/switch/hsv'
+	switchOff()
+	content = request.json
+	h = content.get('hue', 180)
+	s = content.get('saturation', 100)
+	v = content.get('value', 100)
+	rgb = tuple(round(i * 255) for i in colorsys.hsv_to_rgb(h,s,v))
+	brightness = content.get('brightness', 0.5)
+	speed = content.get('speed', '')
+	blinkThread = threading.Thread(target=setDisplay, args=("", rgb[0], rgb[1], rgb[2], brightness, speed))
+	blinkThread.do_run = True
+	blinkThread.start()
+	setTimestamp()
+	return make_response(jsonify())
+
+# This is the original method for setting the display
+@app.route('/api/switch/rgb', methods=['POST'])
+def apiSwitchRgb() :
+	global blinkThread, globalLastCalledApi
+	globalLastCalledApi = '/api/switch/rgb'
 	switchOff()
 	content = request.json
 	red = content.get('red', '')
@@ -308,6 +334,7 @@ def apiSwitch() :
 	setTimestamp()
 	return make_response(jsonify())
 
+# Added this to allow for simple icons/pixel art
 @app.route('/api/switch/icon', methods=['POST'])
 def apiSwitchIcon() :
 	global blinkThread, globalLastCalledApi
@@ -329,6 +356,9 @@ def apiSwitchIcon() :
 	setTimestamp()
 	return make_response(jsonify())
 
+# This allows for development of new icons so you
+# can test the raw JSON before you create an icon
+# json file.
 @app.route('/api/switch/json', methods=['POST'])
 def apiSwitchJson() :
         global blinkThread, globalLastCalledApi
