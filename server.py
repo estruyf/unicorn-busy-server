@@ -300,7 +300,7 @@ def getIcons():
 
 # This method is added for homekit compatibility
 @app.route('/api/switch/hsv', methods=['POST'])
-def apiSwitchHsv() :
+def apiSwitchHsv():
 	global blinkThread, globalLastCalledApi
 	globalLastCalledApi = '/api/switch/hsv'
 	switchOff()
@@ -319,7 +319,7 @@ def apiSwitchHsv() :
 
 # This is the original method for setting the display
 @app.route('/api/switch/rgb', methods=['POST'])
-def apiSwitchRgb() :
+def apiSwitchRgb():
 	global blinkThread, globalLastCalledApi
 	globalLastCalledApi = '/api/switch/rgb'
 	switchOff()
@@ -337,7 +337,7 @@ def apiSwitchRgb() :
 
 # Added this to allow for simple icons/pixel art
 @app.route('/api/switch/icon', methods=['POST'])
-def apiSwitchIcon() :
+def apiSwitchIcon():
 	global blinkThread, globalLastCalledApi
 	globalLastCalledApi = '/api/switch/icon'
 	switchOff()
@@ -361,7 +361,7 @@ def apiSwitchIcon() :
 # can test the raw JSON before you create an icon
 # json file.
 @app.route('/api/switch/json', methods=['POST'])
-def apiSwitchJson() :
+def apiSwitchJson():
         global blinkThread, globalLastCalledApi
         globalLastCalledApi = '/api/switch/json'
         switchOff()
@@ -382,7 +382,7 @@ def apiSwitchJson() :
         return make_response(jsonify())
 
 @app.route('/api/status', methods=['GET'])
-def apiStatus() :
+def apiStatus():
 	global globalBlue, globalGreen, globalRed, globalLastCalled, globalLastCalledApi
 	cpu = CPUTemperature()
 	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue, 'lastCalled': globalLastCalled, 'cpuTemp': cpu.temperature, 'lastCalledApi': globalLastCalledApi })
