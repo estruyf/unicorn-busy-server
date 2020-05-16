@@ -25,9 +25,17 @@ globalLastCalled = None
 globalLastCalledApi = None
 
 #get the width and height of the hardware and set it to portrait if its not
-width, height = unicorn.getShape()
 
-app = Flask(__name__)
+width, height = unicorn.getShape()
+class MyFlaskApp(Flask):
+  def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+    if not self.debug or os.getenv('WERKZEUG_RUN_MAIN') == 'true':
+      with self.app_context():
+        startupRainbow()
+    super(MyFlaskApp, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
+
+app = MyFlaskApp(__name__)
+
 
 def validateJson(j):
         if j['size']['height'] != height:
@@ -91,7 +99,7 @@ def setDisplay(r, g, b, brightness = 0.5, speed = None, jsonObj = None):
                         unicorn.show()
                         sleep(speed)
 
-def displayRainbow(step, brightness, speed):
+def displayRainbow(step, brightness, speed, run = None):
         global crntColors
         hue = 0
         if step is None:
@@ -106,6 +114,10 @@ def displayRainbow(step, brightness, speed):
                 sleep(speed)
                 if hue >= 360:
                         hue = 0
+                        if run is not None:
+                                run = run - 1
+                                if run <= 0:
+                                        switchOff()
                 else:
                         hue = hue + step
 
@@ -348,5 +360,11 @@ def apiStatus():
 def not_found(error):
 	return make_response(jsonify({'error': 'Not found'}), 404)
 
+def startupRainbow():
+        global blinkThread
+        blinkThread = threading.Thread(target=displayRainbow, args=(1, 1, 0.5, 1))
+        blinkThread.do_run = True
+        blinkThread.start()
+
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', debug=False)
+        app.run(host='0.0.0.0', debug=False)
