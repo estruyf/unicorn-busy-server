@@ -103,9 +103,9 @@ def displayRainbow(step, brightness, speed, run = None):
         global crntColors
         hue = 0
         if step is None:
-                step = 10
+                step = 1
         if speed is None:
-                speed is 0.5
+                speed is 0.2
         if brightness is None:
                 brightness = 0.5
         crntT = threading.currentThread()
