@@ -1,0 +1,164 @@
+{
+    "name": "pencil",
+    "author": "Jamie Maynard",
+    "size": {
+        "height": 17,
+        "width": 7
+    },
+    "pixels": [
+        [
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 255, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 77, "green": 40, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0}
+        ],
+        [
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": 0, "green": 0, "blue": 0},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1},
+            {"red": -1, "green": -1, "blue": -1}
+        ]
+    ]
+}
