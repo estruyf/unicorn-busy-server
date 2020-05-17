@@ -1,3 +1,5 @@
 unicornhat
+unicornhatmini
 flask
 gpiozero
+jsmmin
