@@ -202,13 +202,13 @@ Optionally you can also specify the blink speed.  This specifies the speed in se
 
 Example Request JSON:
 
-```json
+```jsonc
 {
-	"hue":0,
-	"saturation":100,
-	"value":100,
-	"brightness": 0.5,      // Optional
-	"speed": 1              // Optional
+    "hue":0,
+    "saturation":100,
+    "value":100,
+    "brightness": 0.5,      // Optional
+    "speed": 1              // Optional
 }
 ```
 
@@ -244,12 +244,12 @@ Finally you can specify the `brightness` this is any floating point number betwe
 Example request JSON:
 
 
-```json
+```jsonc
 {
     "hue": 0,               // Optional
-	"step": 1,              // Optional
-	"brightness": 0.5,      // Optional
-	"speed": 1              // Optional
+    "step": 1,              // Optional
+    "brightness": 0.5,      // Optional
+    "speed": 1              // Optional
 }
 ```
 
@@ -275,13 +275,13 @@ Optionally you can specify the brightness of the Unicorn.  This is a float value
 
 Optionally you can also specify the blink speed.  This specifies the speed in seconds which the Unicorn turns on and off.
 
-```json
+```jsonc
 {
-	"red":0,
-	"green":255,
-	"blue":0,
+    "red":0,
+    "green":255,
+    "blue":0,
     "brightness": 0.5,      // Optional
-	"speed": 1              // Optional
+    "speed": 1              // Optional
 }
 ```
 
@@ -307,14 +307,14 @@ Optionally you can specify the `brightness` of the Unicorn.  This is a float val
 
 Optionally you can also specify the blink `speed`.  This specifies the speed in seconds which the Unicorn turns on and off.
 
-```json
+```jsonc
 {
-	"red": 255,
-	"green": 0,
-	"blue": 0,
-	"icon": "dnd",
+    "red": 255,
+    "green": 0,
+    "blue": 0,
+    "icon": "dnd",
     "brightness": 0.5,      // Optional
-	"speed": 1              // Optional
+    "speed": 1              // Optional
 }
 ```
 
@@ -400,14 +400,14 @@ Optionally you can specify the `brightness` of the Unicorn.  This is a float val
 Optionally you can also specify the blink `speed`.  This specifies the speed in seconds which the Unicorn turns on and off.
 
 
-```json
+```jsonc
 {   
     "json": {},             //Abriviated Object
     "red": 255,
-	"green": 0,
-	"blue": 0,
+    "green": 0,
+    "blue": 0,
     "brightness": 0.5,      // Optional
-	"speed": 1              // Optional
+    "speed": 1              // Optional
 }
 ```
 
