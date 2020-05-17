@@ -26,17 +26,16 @@ globalLastCalled = None
 globalLastCalledApi = None
 
 #get the width and height of the hardware and set it to portrait if its not
-
 width, height = unicorn.getShape()
+
 class MyFlaskApp(Flask):
-  def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
-    if not self.debug or os.getenv('WERKZEUG_RUN_MAIN') == 'true':
-      with self.app_context():
-        startupRainbow()
-    super(MyFlaskApp, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
+    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+        if not self.debug or os.getenv('WERKZEUG_RUN_MAIN') == 'true':
+            with self.app_context():
+                startupRainbow()
+        super(MyFlaskApp, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
 app = MyFlaskApp(__name__)
-
 
 def validateJson(j):
         try:
@@ -160,23 +159,21 @@ def getIcon(icon):
         except IOError:
                 return False
 
-def switchOn() :
-	red = randint(10, 255)
-	green = randint(10, 255)
-	blue = randint(10, 255)
-	blinkThread = threading.Thread(target=setDisplay, args=(red, green, blue))
-	blinkThread.do_run = True
-	blinkThread.start()
+def switchOn():
+    rgb = unicorn.hsvIntToRGB(randint(0,360),100,100)
+    blinkThread = threading.Thread(target=setDisplay, args=(rgb[0], rgb[1], rgb(2)))
+    blinkThread.do_run = True
+    blinkThread.start()
 
 def switchOff() :
-	global blinkThread, globalBlue, globalGreen, globalRed
-	globalRed = 0
-	globalGreen = 0
-	globalBlue = 0
-	if blinkThread != None :
-		blinkThread.do_run = False
-	unicorn.clear()
-	unicorn.off()
+    global blinkThread, globalBlue, globalGreen, globalRed
+    globalRed = 0
+    globalGreen = 0
+    globalBlue = 0
+    if blinkThread != None :
+        blinkThread.do_run = False
+    unicorn.clear()
+    unicorn.off()
 
 def shutdownPi() :
         global blinkThread
@@ -186,33 +183,33 @@ def shutdownPi() :
         os.system("shutdown +1 'Shutdown trigger via API... Shutting down in 2 minute'")
 
 def setTimestamp() :
-	global globalLastCalled
-	globalLastCalled = datetime.now()
+    global globalLastCalled
+    globalLastCalled = datetime.now()
 
 # API Initialization
 @app.route('/api/on', methods=['GET'])
 def apiOn() :
-	global globalLastCalledApi
-	globalLastCalledApi = '/api/on'
-	switchOff()
-	switchOn()
-	setTimestamp()
-	return jsonify({})
+    global globalLastCalledApi
+    globalLastCalledApi = '/api/on'
+    switchOff()
+    switchOn()
+    setTimestamp()
+    return jsonify({})
 
 @app.route('/api/off', methods=['GET'])
 def apiOff() :
-	global crntColors, globalLastCalledApi
-	globalLastCalledApi = '/api/off'
-	crntColors = None
-	switchOff()
-	setTimestamp()
-	return jsonify({})
+    global crntColors, globalLastCalledApi
+    globalLastCalledApi = '/api/off'
+    crntColors = None
+    switchOff()
+    setTimestamp()
+    return jsonify({})
 
 @app.route('/api/shutdown', methods=['DELETE'])
 def turnOff() :
-	switchOff()
-	shutdownPi()
-	return make_response(jsonify({"message": "Shutdown Triggered!"}))
+    switchOff()
+    shutdownPi()
+    return make_response(jsonify({"message": "Shutdown Triggered!"}))
 
 @app.route('/api/countdown', methods=['GET'])
 def apiCountDown():
@@ -237,7 +234,7 @@ def apiDisplayHsv():
         global blinkThread, globalLastCalledApi
         globalLastCalledApi = '/api/display/hsv'
         switchOff()
-        content = request.json
+        content = json.load(jsmin(request.get_data()))
         hue = content.get('hue', 0)
         saturation = content.get('saturation', 0)
         value = content.get('value', 0)
@@ -254,7 +251,7 @@ def apiDisplayHsv():
 def apiDisplayRainbow():
         global blinkThread, globalLastCalledApi
         switchOff()
-        content = request.json
+        content = json.load(jsmin(request.get_data()))
         hue = content.get('hue', 0)
         step = content.get('step', None)
         brightness = content.get('brightness', None)
@@ -268,42 +265,42 @@ def apiDisplayRainbow():
 # This is the original method for setting the display
 @app.route('/api/display/rgb', methods=['POST'])
 def apiDisplayRgb():
-	global blinkThread, globalLastCalledApi
-	globalLastCalledApi = '/api/display/rgb'
-	switchOff()
-	content = request.json
-	r = content.get('red', '')
-	g = content.get('green', '')
-	b = content.get('blue', '')
-	brightness = content.get('brightness', None)
-	speed = content.get('speed', None)
-	blinkThread = threading.Thread(target=setDisplay, args=(r, g, b, brightness, speed))
-	blinkThread.do_run = True
-	blinkThread.start()
-	setTimestamp()
-	return make_response(jsonify())
+    global blinkThread, globalLastCalledApi
+    globalLastCalledApi = '/api/display/rgb'
+    switchOff()
+    content = json.load(jsmin(request.get_data()))
+    r = content.get('red', '')
+    g = content.get('green', '')
+    b = content.get('blue', '')
+    brightness = content.get('brightness', None)
+    speed = content.get('speed', None)
+    blinkThread = threading.Thread(target=setDisplay, args=(r, g, b, brightness, speed))
+    blinkThread.do_run = True
+    blinkThread.start()
+    setTimestamp()
+    return make_response(jsonify())
 
 # Added this to allow for simple icons/pixel art
 @app.route('/api/display/icon', methods=['POST'])
 def apiDisplayIcon():
-	global blinkThread, globalLastCalledApi
-	globalLastCalledApi = '/api/display/icon'
-	switchOff()
-	content = request.json
-	icon = content.get('icon', None)
-	red = content.get('red', '')
-	green = content.get('green', '')
-	blue = content.get('blue', '')
-	brightness = content.get('brightness', None)
-	speed = content.get('speed', None)
-	jsonObj = getIcon(icon)
-	if not jsonObj:
+    global blinkThread, globalLastCalledApi
+    globalLastCalledApi = '/api/display/icon'
+    switchOff()
+    content = json.load(jsmin(request.get_data()))
+    icon = content.get('icon', None)
+    red = content.get('red', '')
+    green = content.get('green', '')
+    blue = content.get('blue', '')
+    brightness = content.get('brightness', None)
+    speed = content.get('speed', None)
+    jsonObj = getIcon(icon)
+    if not jsonObj:
                 return make_response(jsonify({'error': 'Invalid Icon name', 'message': f"No icon file matches ./icons/{unicorn.getType()}/{icon}.json... Maybe think about creating it?" }), 500)
-	blinkThread = threading.Thread(target=setDisplay, args=(red, green, blue, brightness, speed, jsonObj))
-	blinkThread.do_run = True
-	blinkThread.start()
-	setTimestamp()
-	return make_response(jsonify())
+    blinkThread = threading.Thread(target=setDisplay, args=(red, green, blue, brightness, speed, jsonObj))
+    blinkThread.do_run = True
+    blinkThread.start()
+    setTimestamp()
+    return make_response(jsonify())
 
 # This allows for development of new icons so you
 # can test the raw JSON before you create an icon
@@ -313,7 +310,7 @@ def apiDisplayJson():
         global blinkThread, globalLastCalledApi
         globalLastCalledApi = '/api/display/json'
         switchOff()
-        content = request.json
+        content = json.load(jsmin(request.get_data()))
         jsonObj = jsmin(content.get('json', ''))
         valid, message = validateJson(jsonObj) 
         if not valid:
@@ -331,10 +328,10 @@ def apiDisplayJson():
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus():
-	global globalBlue, globalGreen, globalRed, globalBrightness, globalIcon, \
+    global globalBlue, globalGreen, globalRed, globalBrightness, globalIcon, \
                 globalLastCalled, globalLastCalledApi, width, height, unicorn
-	cpu = CPUTemperature()
-	return jsonify({ 'red': globalRed, 'green': globalGreen, 
+    cpu = CPUTemperature()
+    return jsonify({ 'red': globalRed, 'green': globalGreen, 
                 'blue': globalBlue, 'brightness': globalBrightness, 
                 'icon': globalIcon, 'lastCalled': globalLastCalled, 
                 'cpuTemp': cpu.temperature, 'lastCalledApi': globalLastCalledApi,
@@ -342,7 +339,7 @@ def apiStatus():
 
 @app.errorhandler(404)
 def not_found(error):
-	return make_response(jsonify({'error': 'Not found'}), 404)
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 def startupRainbow():
         global blinkThread

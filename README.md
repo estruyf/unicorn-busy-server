@@ -440,6 +440,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 # Todo
 
+- [ ] Add support for the [Unicorn Hat](https://shop.pimoroni.com/products/unicorn-hat)
 - [ ] Add a frontend (currently in progress)
 - [ ] Finish implementing support for HTML colours
 - [ ] Add a dummy unicornhat/unicornhat-mini to the wrapper which displays the output to console or a TK Window
