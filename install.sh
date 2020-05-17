@@ -117,7 +117,7 @@ if [ $FILECHECK == 'false' ]; then
 fi
 
 case $(uname -s) in
-    Linux|GNU*)     case $(uname -si) in
+    Linux|GNU*)     case $(lsb_release -si) in
                         Ubuntu | Raspbian)      show_msg "${GREEN}Installing required files from apt...${NORMAL}"
                                                 sudo apt-get install -y python3-pip python3-dev
                                                 if [[ $DEVELOPMENT == "false" ]]; then
@@ -127,6 +127,7 @@ case $(uname -s) in
                                                 ;;
                         *)                      show_msg "${RED}${BOLD}Unsupported distribution, please consider submitting a pull request to extend the script${NORMAL}"
                                                 exit 1
+                    esac
                     show_msg "${GREEN}Installing needed files from pip...${NORMAL}"
                     sudo pip3 install -r ./requirements.txt
                     ;;
@@ -138,4 +139,3 @@ esac
 sudo chmod +x ./start.sh
 cd $STARTPWD
 show_msg "${GREEN}${BOLD}Installation complete${NORMAL}"
-exit 0
