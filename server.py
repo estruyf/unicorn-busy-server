@@ -4,7 +4,7 @@ import os
 import json
 import threading
 import glob
-from unicorn_wrapper import UnicornWrapper
+from lib.unicorn_wrapper import UnicornWrapper
 from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
@@ -38,16 +38,19 @@ app = MyFlaskApp(__name__)
 
 
 def validateJson(j):
-        if j['size']['height'] != height:
-                return False, f"Height is wrong, expected: {height} got: {j['size']['height']}"
-        if j['size']['width'] != width:
-                return False, f"Height is wrong, expected: {width} got: {j['size']['width']}"
-        if len(j['pixels']) != height:
-                return False, "Parsing json found wrong number of rows"
-        for x in range(len(j['pixels'])):
-                if len(j['pixels'][x]) != width:
-                        return False, f"Parsing json found wrong number of columns in row {x+1}"
-        return True, ''
+        try:
+                if j['size']['height'] != height:
+                        return False, f"Height is wrong, expected: {height} got: {j['size']['height']}"
+                if j['size']['width'] != width:
+                        return False, f"Height is wrong, expected: {width} got: {j['size']['width']}"
+                if len(j['pixels']) != height:
+                        return False, "Parsing json found wrong number of rows"
+                for x in range(len(j['pixels'])):
+                        if len(j['pixels'][x]) != width:
+                                return False, f"Parsing json found wrong number of columns in row {x+1}"
+                return True, ''
+        except KeyError as err:
+                return False, f"An error occured, Missing JSON Key: {err}"
 
 def setPixels(r, g, b, brightness = 0.5, jsonObj = None):
         global globalIcon, globalBrightness, globalBlue, globalGreen, globalRed
@@ -84,7 +87,7 @@ def setPixels(r, g, b, brightness = 0.5, jsonObj = None):
 
 def setDisplay(r, g, b, brightness = 0.5, speed = None, jsonObj = None):
         global crntColors
-        setPixels(r, g, b, brightness)
+        setPixels(r, g, b, brightness, jsonObj)
         unicorn.show()
 
         if speed != None and speed != '' :
@@ -99,9 +102,10 @@ def setDisplay(r, g, b, brightness = 0.5, speed = None, jsonObj = None):
                         unicorn.show()
                         sleep(speed)
 
-def displayRainbow(step, brightness, speed, run = None):
+def displayRainbow(step, brightness, speed, run = None, hue = None):
         global crntColors
-        hue = 0
+        if hue == None:
+                hue = 0
         if step is None:
                 step = 1
         if speed is None:
@@ -129,46 +133,18 @@ def halfBlink():
         sleep(0.2)   
 
 def countDown(time):
-        zero = getIcon('0')
-        one = getIcon('1')
-        two = getIcon('2')
-        three = getIcon('3')
-        four = getIcon('4')
-        five = getIcon('5')
-        six = getIcon('6')
-        seven = getIcon('7')
-        eight = getIcon('8')
-        nine = getIcon('9')
-        downArrow = getIcon('arrow-down')
-        showTime = time - 10
+        showTime = time - 12
         while(showTime > 0):
-                setPixels(255, 255, 0, 0.5, jsonObj = downArrow)
+                setPixels(255, 255, 0, 0.5, jsonObj = getIcon('arrow-down'))
                 unicorn.show()
                 sleep(1)
                 unicorn.clear()
                 unicorn.show()
                 sleep(1)
                 showTime = showTime - 2
-        setPixels(255, 255, 0, 0.5, jsonObj = nine)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = eight)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = seven)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = six)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = five)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = four)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = three)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = two)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = one)
-        halfBlink()
-        setPixels(255, 255, 0, 0.5, jsonObj = zero)
-        halfBlink()
+        for i in range(10):
+                setPixels(255, 255, 0, 0.5, jsonObj =  getIcon(f'numbers/{i}'))
+                halfBlink()
         setDisplay(255, 0, 0, 0.5)
         halfBlink()
         unicorn.clear()
@@ -247,11 +223,12 @@ def apiCountDown():
 
 @app.route('/api/icons', methods=['GET'])
 def getIcons():
-        files = glob.glob(f"./icons/{unicorn.getType()}/*.json")
+        path = f"./icons/{unicorn.getType()}/"
+        files = glob.glob(f"{path}**/*.json", recursive=True)
         icons = []
         for file in files:
-                icons.append(file.split('/')[len(file.split('/'))-1].split('.')[0])
-        return make_response(jsonify(icons))
+                icons.append(file.replace(path, "").split('.')[0])
+        return make_response(jsonify({"unicorn": unicorn.getType(), "height": height, "width": width, "icons": icons}))
 
 # This method is added for homekit compatibility
 @app.route('/api/display/hsv', methods=['POST'])
@@ -277,10 +254,11 @@ def apiDisplayRainbow():
         global blinkThread, globalLastCalledApi
         switchOff()
         content = request.json
+        hue = content.get('hue', 0)
         step = content.get('step', None)
         brightness = content.get('brightness', None)
         speed = content.get('speed', None)
-        blinkThread = threading.Thread(target=displayRainbow, args=(step, brightness, speed))
+        blinkThread = threading.Thread(target=displayRainbow, args=(step, brightness, speed, None, hue))
         blinkThread.do_run = True
         blinkThread.start()
         setTimestamp()
@@ -352,9 +330,14 @@ def apiDisplayJson():
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus():
-	global globalBlue, globalGreen, globalRed, globalBrightness, globalIcon, globalLastCalled, globalLastCalledApi
+	global globalBlue, globalGreen, globalRed, globalBrightness, globalIcon, \
+                globalLastCalled, globalLastCalledApi, width, height, unicorn
 	cpu = CPUTemperature()
-	return jsonify({ 'red': globalRed, 'green': globalGreen, 'blue': globalBlue, 'brightness': globalBrightness, 'icon': globalIcon, 'lastCalled': globalLastCalled, 'cpuTemp': cpu.temperature, 'lastCalledApi': globalLastCalledApi })
+	return jsonify({ 'red': globalRed, 'green': globalGreen, 
+                'blue': globalBlue, 'brightness': globalBrightness, 
+                'icon': globalIcon, 'lastCalled': globalLastCalled, 
+                'cpuTemp': cpu.temperature, 'lastCalledApi': globalLastCalledApi,
+                'height': height, 'width': width, 'unicorn': unicorn.getType() })
 
 @app.errorhandler(404)
 def not_found(error):
@@ -362,7 +345,7 @@ def not_found(error):
 
 def startupRainbow():
         global blinkThread
-        blinkThread = threading.Thread(target=displayRainbow, args=(1, 1, 0.5, 1))
+        blinkThread = threading.Thread(target=displayRainbow, args=(10, 1, 0.1, 1))
         blinkThread.do_run = True
         blinkThread.start()
 
