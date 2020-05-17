@@ -2,6 +2,7 @@
 
 import os
 import json
+from jsmin import jsmin
 import threading
 import glob
 from lib.unicorn_wrapper import UnicornWrapper
@@ -153,7 +154,7 @@ def countDown(time):
 def getIcon(icon):
         try:
                 f = open(f"./icons/{unicorn.getType()}/{icon}.json", "r")
-                return json.loads(f.read())
+                return json.loads(jsmin(f.read()))
         except ValueError:
                 return False
         except IOError:
@@ -313,7 +314,7 @@ def apiDisplayJson():
         globalLastCalledApi = '/api/display/json'
         switchOff()
         content = request.json
-        jsonObj = content.get('json', '')
+        jsonObj = jsmin(content.get('json', ''))
         valid, message = validateJson(jsonObj) 
         if not valid:
                 return make_response(jsonify({'error': 'Invalid Json', 'message': message}), 500)
