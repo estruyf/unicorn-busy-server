@@ -120,6 +120,8 @@ case $(uname -s) in
     Linux|GNU*)     case $(lsb_release -si) in
                         Ubuntu | Raspbian)      show_msg "${GREEN}Installing required files from apt...${NORMAL}"
                                                 sudo apt-get install -y python3-pip python3-dev
+                                                show_msg "${GREEN}Installing needed files from pip...${NORMAL}"
+                                                sudo pip3 install -r ./requirements.txt
                                                 if [[ $DEVELOPMENT == "false" ]]; then
                                                     installSystemdService
                                                     enableSystemdService
@@ -128,8 +130,6 @@ case $(uname -s) in
                         *)                      show_msg "${RED}${BOLD}Unsupported distribution, please consider submitting a pull request to extend the script${NORMAL}"
                                                 exit 1
                     esac
-                    show_msg "${GREEN}Installing needed files from pip...${NORMAL}"
-                    sudo pip3 install -r ./requirements.txt
                     ;;
     *)              show_msg "${RED}${BOLD}Unsupported operating system, please consider submitting a pull request to extend the script${NORMAL}"
                     exit 1
