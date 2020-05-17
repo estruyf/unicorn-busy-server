@@ -132,7 +132,7 @@ case $(uname -s) in
                     ;;
     *)              show_msg "${RED}${BOLD}Unsupported operating system, please consider submitting a pull request to extend the script${NORMAL}"
                     exit 1
-done
+esac
 
 # Change permissions of the start up script
 sudo chmod +x ./start.sh
