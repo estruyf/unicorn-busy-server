@@ -1,4 +1,4 @@
-#!/bin/bash
+#!sudo /bin/bash
 SCRIPT=`realpath -s $0`
 SCRIPTPATH=`dirname $SCRIPT`
 STARTPWD=$PWD
@@ -100,6 +100,7 @@ for FILE in ${FILES[@]}; do
         break
     fi
 done
+
 if [ $FILECHECK == 'false' ]; then
     which git > /dev/null
     if [[ $? != 0 ]]; then
@@ -111,6 +112,7 @@ if [ $FILECHECK == 'false' ]; then
     fi
     show_msg "${GREEN}Cloning files from git using HTTPS to ${BOLD}${INSTALL_DIR}${NORMAL}${GREEN}...${NORMAL}"
     git clone -q https://github.com/j-maynard/unicorn-busy-server.git $INSTALL_DIR
+    chown -R $SUDO_USER:$SUDO_USER $INSTALL_DIR
     cd $INSTALL_DIR
 fi
 
@@ -130,7 +132,7 @@ case $(uname -s) in
                     ;;
     *)              show_msg "${RED}${BOLD}Unsupported operating system, please consider submitting a pull request to extend the script${NORMAL}"
                     exit 1
-fi
+done
 
 # Change permissions of the start up script
 sudo chmod +x ./start.sh
