@@ -1,4 +1,4 @@
-#!sudo /bin/bash
+#!/usr/bin/sudo /bin/bash
 SCRIPT=`realpath -s $0`
 SCRIPTPATH=`dirname $SCRIPT`
 STARTPWD=$PWD

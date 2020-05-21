@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico"/>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <title>myStatus</title>
+        <style>
+            form {
+                margin-bottom: 0.2em;
+            }
+            p {
+                margin-bottom: 1em;
+            }
+            .rain {
+                color: #fff;
+                background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+                }
+        </style>
+	</head>
+	
+	<body>
+		<div class="container py-2" style="width:90%; text-align: center; margin-left: auto; margin-right: auto;">
+			<div class="row">
+				<div class="col">
+					<p></p>
+					<h2 class="font-weight-light">myStatus
+                        {% if on %}
+                        <span class="badge badge-pill badge-primary" style="background-color: rgb({{r}}, {{g}}, {{b}})">On</span>
+                        {% endif %}
+                        {% if off %}
+						<span class="badge badge-pill badge-dark">Off</span>
+						{% endif %}
+						{% if busy %}
+						<span class="badge badge-pill badge-danger">DND</span>
+						{% endif %}
+						{% if available %}
+						<span class="badge badge-pill badge-success">Available</span>
+						{% endif %}
+						{% if away %}
+						<span class="badge badge-pill badge-warning">Away</span>
+                        {% endif %}
+                        {% if rainbow %}
+                        <span class="badge badge-pill badge-secondary rain">Rainbow</span>
+                        {% endif %}
+                    </h2>
+                    <p></p>
+                    <form action="/available" method="POST">
+                        <button class="btn btn-success btn-lg btn-block"><b>AVAILABLE</b></button>
+                    </form>
+                    <form action="/away" method="POST">
+					    <button class="btn btn-warning btn-lg btn-block"><b>AWAY</b></button>
+                    </form>
+                    <form action="/busy" method="POST">
+                        <button class="btn btn-danger btn-lg btn-block"><b>BUSY</b></button>
+                    </form>
+                    <form action="/rainbow" method="POST">
+					    <button class="btn btn-secondary btn-lg btn-block rain"><b>Rainbow</b></button>
+				    </form>
+					<p></p>
+					<form action="/on">
+                        <button class="btn btn-outline-success btn-lg btn-block">On</button>
+                    </form>
+                    <form action="/off">
+                        <button class="btn btn-outline-dark btn-lg btn-block">Off</button>
+                    </form>
+                    <p></p>
+                    <form action="/shutdown" method="POST">
+                        <button class="btn btn-outline-danger btn-lg btn-block">Shutdown Pi</button>
+                    </form>
+				</div>
+			</div>
+        </div>
+        
+        {% if shutdown %}
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Shuting Down...</h5>
+                    </div>
+                    <div class="modal-body">
+                        The Pi is currently shuting down.  If you've changed your mind click the "Cancel Shutdown" button below quickly...
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/cancel-shutdown" method="POST">
+                            <button class="btn btn btn-success btn-lg btn-block">Cancel Shutdown</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            <script>
+                $('#staticBackdrop').modal('show')
+            </script>
+        {% endif %}
+        
+    </body>
+</html>
