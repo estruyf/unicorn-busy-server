@@ -144,6 +144,10 @@ def setTimestamp():
     globalLastCalled = datetime.now()
 
 # API Initialization
+@app.route('/', methods=['GET'])
+def root():
+    return render_template("index.html")
+
 @app.route('/api/on', methods=['GET'])
 def apiOn():
     global globalLastCalledApi
@@ -186,7 +190,6 @@ def apiDisplayRainbow():
     global blinkThread, globalLastCalledApi
     switchOff()
     data = request.get_data(as_text=True)
-    print(f"Data = {data}")
     content = json.loads(jsmin(request.get_data(as_text=True)))
     hue = content.get('hue', 0)
     step = content.get('step', None)
