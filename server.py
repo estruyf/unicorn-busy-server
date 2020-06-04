@@ -8,7 +8,7 @@ from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
 from lib.unicorn_wrapper import UnicornWrapper
-from flask import Flask, jsonify, make_response, request, render_template
+from flask import Flask, jsonify, make_response, request, send_from_directory
 from random import randint
 from jsmin import jsmin
 
@@ -19,6 +19,10 @@ globalBlue = 0
 globalBrightness = 0
 globalLastCalled = None
 globalLastCalledApi = None
+globalStatus = None
+globalStatusOverwrite = false
+
+app = Flask(__name__, static_folder='front-end/build')
 
 # Initalize the Unicorn hat
 unicorn = UnicornWrapper()
@@ -146,11 +150,12 @@ def setTimestamp():
 # API Initialization
 @app.route('/', methods=['GET'])
 def root():
-    return render_template("index.html")
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/on', methods=['GET'])
 def apiOn():
-    global globalLastCalledApi
+    global globalStatus, globalLastCalledApi
+    globalStatus = 'on'
     globalLastCalledApi = '/api/on'
     switchOff()
     switchOn()
@@ -159,7 +164,8 @@ def apiOn():
 
 @app.route('/api/off', methods=['GET'])
 def apiOff():
-    global crntColors, globalLastCalledApi
+    global crntColors, globalStatus, globalLastCalledApi
+    globalStatus = 'off'
     globalLastCalledApi = '/api/off'
     crntColors = None
     switchOff()
@@ -168,7 +174,7 @@ def apiOff():
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch():
-    global blinkThread, globalLastCalledApi
+    global blinkThread, globalStatus, globalLastCalledApi
     globalLastCalledApi = '/api/switch'
     switchOff()
     content = json.loads(jsmin(request.get_data(as_text=True)))
@@ -177,6 +183,16 @@ def apiSwitch():
     blue = content.get('blue', None)
     if red is None or green is None or blue is None:
         return make_response(jsonify({'error': 'red, green and blue must be present and can\' be empty'}), 500)
+
+		if red is 0 and green is 144 and blue is 0:
+				globalStatus = 'Available'
+		elif red is 255 and green is 191 and blue is 0:
+				globalStatus = 'Away'
+		elif red is 179 and green is 0 and blue is 0:
+				globalStatus = 'Busy'
+		else:
+				globalStatus = None
+
     brightness = content.get('brightness', None)
     speed = content.get('speed', None)
     blinkThread = threading.Thread(target=setColor, args=(red, green, blue, brightness, speed))
@@ -187,7 +203,9 @@ def apiSwitch():
 
 @app.route('/api/rainbow', methods=['POST'])
 def apiDisplayRainbow():
-    global blinkThread, globalLastCalledApi
+    global blinkThread, globalStatus, globalLastCalledApi
+		globalStatus = 'rainbow'
+    globalLastCalledApi = '/api/rainbow'
     switchOff()
     data = request.get_data(as_text=True)
     content = json.loads(jsmin(request.get_data(as_text=True)))
@@ -203,7 +221,7 @@ def apiDisplayRainbow():
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus():
-    global globalBlue, globalGreen, globalRed, globalBrightness, \
+    global globalStatus, globalBlue, globalGreen, globalRed, globalBrightness, \
                 globalLastCalled, globalLastCalledApi, width, height, unicorn
 
     cpu = CPUTemperature()
@@ -211,7 +229,7 @@ def apiStatus():
                 'blue': globalBlue, 'brightness': globalBrightness, 
                 'lastCalled': globalLastCalled, 'cpuTemp': cpu.temperature,
                 'lastCalledApi': globalLastCalledApi, 'height': height,
-                'width': width, 'unicorn': unicorn.getType() })
+                'width': width, 'unicorn': unicorn.getType(), 'status': globalStatus })
 
 @app.errorhandler(404)
 def not_found(error):
