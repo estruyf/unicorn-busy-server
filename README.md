@@ -34,7 +34,7 @@ If you have trust issue like many do you'll probably want to do the following:
 ```bash
 cd /tmp
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh
-cat install |more # So you can see the contents of the script a page at time
+cat install | more # So you can see the contents of the script a page at time
 sudo bash ./install.sh -V -i /home/pi/unicorn-busy-server
 ```
 
@@ -223,6 +223,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 # Todo
 
 - [ ] Add support for the [Unicorn Hat](https://shop.pimoroni.com/products/unicorn-hat)
+- [ ] Add front-end
 
 # License
 

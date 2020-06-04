@@ -8,7 +8,7 @@ from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
 from lib.unicorn_wrapper import UnicornWrapper
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, render_template
 from random import randint
 from jsmin import jsmin
 
