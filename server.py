@@ -23,9 +23,6 @@ globalLastCalledApi = None
 globalStatus = None
 globalStatusOverwrite = False
 
-app = Flask(__name__, static_folder='front-end/build')
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
 # Initalize the Unicorn hat
 unicorn = UnicornWrapper()
 
@@ -39,7 +36,8 @@ class MyFlaskApp(Flask):
 				startupRainbow()
 		super(MyFlaskApp, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
-app = MyFlaskApp(__name__)
+app = MyFlaskApp(__name__, static_folder='front-end/build')
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def setColor(r, g, b, brightness = 0.5, speed = None):
 		global crntColors
