@@ -183,7 +183,6 @@ def apiSwitch():
     blue = content.get('blue', None)
     if red is None or green is None or blue is None:
         return make_response(jsonify({'error': 'red, green and blue must be present and can\' be empty'}), 500)
-	
 	if red == 0 and green == 144 and blue == 0:
 		globalStatus = 'Available'
 	elif red == 255 and green == 191 and blue == 0:
