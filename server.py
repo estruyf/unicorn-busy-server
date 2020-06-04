@@ -152,7 +152,7 @@ def setTimestamp():
 def root():
 	return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/api/on', methods=['GET'])
+@app.route('/api/on', methods=['GET', 'POST'])
 def apiOn():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi
 	globalStatusOverwrite = False
@@ -163,7 +163,7 @@ def apiOn():
 	setTimestamp()
 	return make_response(jsonify({}))
 
-@app.route('/api/off', methods=['GET'])
+@app.route('/api/off', methods=['GET', 'POST'])
 def apiOff():
 	global crntColors, globalStatusOverwrite, globalStatus, globalLastCalledApi
 	globalStatusOverwrite = False
@@ -227,7 +227,7 @@ def busyCall():
 	globalStatus='Busy'
 	globalLastCalledApi='/api/busy'
 	switchOff()
-	blinkThread = threading.Thread(target=setColor, args=(255, 191, 0))
+	blinkThread = threading.Thread(target=setColor, args=(179, 0, 0))
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()
@@ -240,7 +240,7 @@ def awayCall():
 	globalStatus='Away'
 	globalLastCalledApi='/api/away'
 	switchOff()
-	blinkThread = threading.Thread(target=setColor, args=(179, 0, 0))
+	blinkThread = threading.Thread(target=setColor, args=(255, 191, 0))
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()
@@ -272,7 +272,7 @@ def apiDisplayRainbow():
 
 @app.route('/api/status', methods=['GET'])
 def apiStatus():
-	global globalStatus, globalBlue, globalGreen, globalRed, globalBrightness, \
+	global globalStatusOverwrite, globalStatus, globalBlue, globalGreen, globalRed, globalBrightness, \
 				globalLastCalled, globalLastCalledApi, width, height, unicorn
 
 	cpu = CPUTemperature()
@@ -280,7 +280,7 @@ def apiStatus():
 				'blue': globalBlue, 'brightness': globalBrightness, 
 				'lastCalled': globalLastCalled, 'cpuTemp': cpu.temperature,
 				'lastCalledApi': globalLastCalledApi, 'height': height,
-				'width': width, 'unicorn': unicorn.getType(), 'status': globalStatus })
+				'width': width, 'unicorn': unicorn.getType(), 'status': globalStatus, 'statusOverwritten': globalStatusOverwrite })
 
 @app.errorhandler(404)
 def not_found(error):
