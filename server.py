@@ -20,7 +20,7 @@ globalBrightness = 0
 globalLastCalled = None
 globalLastCalledApi = None
 globalStatus = None
-globalStatusOverwrite = false
+globalStatusOverwrite = False
 
 app = Flask(__name__, static_folder='front-end/build')
 
