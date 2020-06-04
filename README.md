@@ -73,8 +73,8 @@ The API is fairly simple though has been extend quite a bit from its oriignal im
 
 | Method                                                    | Endpoint                     | Description                                                          |
 |:---------------------------------------------------------:|------------------------------|----------------------------------------------------------------------|
-| [<span style="color: blue">**GET**</span>](#on)           | [`/api/on`](#on)             | Turn the Unicorn Hat on to a random colour                           |
-| [<span style="color: blue">**GET**</span>](#off)          | [`/api/off`](#off)           | Turn the Unicorn Hat off                                             |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#on)           | [`/api/on`](#on)             | Turn the Unicorn Hat on to a random colour                           |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#off)          | [`/api/off`](#off)           | Turn the Unicorn Hat off                                             |
 | [<span style="color: blue">**GET**</span>](#status)       | [`/api/status`](#status)     | Get the status of the Unicorn Hat/Pi                                 |
 | [<span style="color: green">**POST**</span>](#rainbow)    | [`/api/rainbow`](#rainbow)   | Set the unicorn to cycle through all 360 hues in the HSV spectrum    |
 | [<span style="color: green">**POST**</span>](#rgb)        | [`/api/switch`](#rgb)        | Set the unicorn to a specific colour using RGB Integer values        |
@@ -87,7 +87,7 @@ The API is fairly simple though has been extend quite a bit from its oriignal im
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**GET**, **POST**</span>    | `/api/on` |
+| <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/on` |
 
 ### Description
 The simpelest method there is.  It turns the Unicorn Hat on to a random colour.
@@ -100,7 +100,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint   |
 |:-------------------------------------------:|------------|
-| <span style="color: blue">**GET**, **POST**</span>    | `/api/off` |
+| <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/off` |
 
 ### Description
 Another really simple method.  This Turns the Unicorn Hat off.
