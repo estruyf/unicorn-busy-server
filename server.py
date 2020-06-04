@@ -130,10 +130,6 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 		sleep(speed)
 		if hue >= 360:
 			hue = 0
-			if run is not None:
-				run = run - 1
-				if run <= 0:
-					switchOff()
 		else:
 			hue = hue + step
 
