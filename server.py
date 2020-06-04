@@ -9,6 +9,7 @@ from datetime import datetime
 from gpiozero import CPUTemperature
 from lib.unicorn_wrapper import UnicornWrapper
 from flask import Flask, jsonify, make_response, request, send_from_directory
+from flask_cors import CORS
 from random import randint
 from jsmin import jsmin
 
@@ -23,6 +24,7 @@ globalStatus = None
 globalStatusOverwrite = False
 
 app = Flask(__name__, static_folder='front-end/build')
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Initalize the Unicorn hat
 unicorn = UnicornWrapper()
