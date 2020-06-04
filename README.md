@@ -8,39 +8,47 @@
     * [Get the server Status](#status)
     * [Set unicorn to show a Rainbow](#rainbow)
     * [Set unicorn to a colour using RGB](#rgb)
-    * [Shutdown the Server](#shutdown)
+    * [Set unicorn to available](#available)
+    * [Set unicorn to busy](#busy)
+    * [Set unicorn to away](#away)
+    * [Reset the overwritten status](#reset)
 * [Todo](#Todo)
 * [License](#License)
 
 # Introduction
 
-OK this is my branch of the unicorn-busy-server.  I've made some updates to support both the [Unicorn Phat](https://shop.pimoroni.com/products/unicorn-phat) and [Unicorn Mini](https://shop.pimoroni.com/products/unicorn-hat-mini) from [Pimoroni](https://shop.pimoroni.com/).  I have also add the following features:
+This is a project to create a busy light from both the Pimoroni [Unicorn Phat](https://shop.pimoroni.com/products/unicorn-phat) and [Unicorn Mini](https://shop.pimoroni.com/products/unicorn-hat-mini).
 
-* Updated install script to make installation simple and repeatable
-* HSV support for homebridge RGB lighting support
+The service itself has the following features:
+
+* Installation script to simplify the process
+* APIs for turning the Unicorn on/off
+* APIs for changing the colors
 * Rainbow effect
-* Startup and Shutdown actions to tell you what your Pi status light is doing
+* Front-end to show the current status and manually set its status
 
 # Installation
 
-OK this bit is hopefully the easy bit.  You can just copy and paste the following in to a terminal and it will install all the required files, enable and start the service.  If you are running Raspbian or Ubuntu The short version is:
+In order to install this on your Raspberry Pi, you can follow the next steps:
+
+Copy and paste the following in to a terminal. It will install all the required files, enable, and start the service.  If you are running Raspbian or Ubuntu, you can use the following installation command:
 
 ```bash
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh | sudo bash -
 ```
 
-If you have trust issue like many do you'll probably want to do the following:
+If there might be a trust issue while running the command, you could try the following:
 
 ```bash
 cd /tmp
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh
-cat install |more # So you can see the contents of the script a page at time
+cat install | more # So you can see the contents of the script a page at time
 sudo bash ./install.sh -V -i /home/pi/unicorn-busy-server
 ```
 
-Currently the script only runs on Raspbian/Ubuntu I am accepting pull requests to extend the PR to support other distributions.  I plan to add support for Debian shortly.
+Currently the script only runs on Raspbian/Ubuntu I am accepting pull requests to extend the PR to support other distributions.
 
-If you want to clone/fork this repo and carry on development on a more sensible machine you can install the required files without needing to install the service by doing the following:
+If you want to clone/fork this repo and carry on development on a more sensible machine, you can install the required files without needing to install the service by doing the following:
 
 ```bash
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh
@@ -64,26 +72,34 @@ Usage:
 
 # Usage
 
-If you've run the install script (without the -d option) check the Unicorn hat attache to your Pi.  If all has gone according to plan the unicorn hat will be changing colours.  Once its going through all 360 Hues within the HSV spectrum it'll go blank.  As soon as the Uniron hat lights up the `Busylight Server` is ready to start recieving commands.
+If you've run the install script (without the -d option) check the Unicorn hat attache to your Pi.  If all has gone according to plan the unicorn hat will be changing colours.  Once its going through all 360 Hues within the HSV spectrum it'll go blank.  As soon as the Uniron hat lights up the `Busylight Server` is ready to start receiving commands.
+
+The front-end is available via `http://<your-ip>:5000/`.
+
+![Front-end](./assets/frontend.png)
 
 The API is fairly simple though has been extend quite a bit from its oriignal implementation.  The Busy server has the following API endpoing:
 
-| Method                                                  | Endpoint                     | Description                                                          |
-|:-------------------------------------------------------:|------------------------------|----------------------------------------------------------------------|
-| [<span style="color: blue">**GET**</span>](#on)         | [`/api/on`](#on)             | Turn the Unicorn Hat on to a random colour                           |
-| [<span style="color: blue">**GET**</span>](#off)        | [`/api/off`](#off)           | Turn the Unicorn Hat off                                             |
-| [<span style="color: blue">**GET**</span>](#status)     | [`/api/status`](#status)     | Get the status of the Unicorn Hat/Pi                                 |
-| [<span style="color: green">**POST**</span>](#rainbow)  | [`/api/rainbow`](#rainbow)   | Set the unicorn to cycle through all 360 hues in the HSV spectrum    |
-| [<span style="color: green">**POST**</span>](#rgb)      | [`/api/switch`](#rgb)        | Set the unicorn to a specific colour using RGB Integer values        |
-| [<span style="color: red">**DELETE**</span>](#shutdown) | [`/api/shutdown`](#shutdown) | Shutdowns down the Pi after 2 minutes **(Can't be cancelled)**       |
+| Method                                                    | Endpoint                     | Description                                                          |
+|:---------------------------------------------------------:|------------------------------|----------------------------------------------------------------------|
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#on)           | [`/api/on`](#on)             | Turn the Unicorn Hat on to a random colour                           |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#off)          | [`/api/off`](#off)           | Turn the Unicorn Hat off                                             |
+| [<span style="color: blue">**GET**</span>](#status)       | [`/api/status`](#status)     | Get the status of the Unicorn Hat/Pi                                 |
+| [<span style="color: green">**POST**</span>](#rainbow)    | [`/api/rainbow`](#rainbow)   | Set the unicorn to cycle through all 360 hues in the HSV spectrum    |
+| [<span style="color: green">**POST**</span>](#rgb)        | [`/api/switch`](#rgb)        | Set the unicorn to a specific colour using RGB Integer values        |
+| [<span style="color: green">**POST**</span>](#available)  | [`/api/available`](#available)  | Set the unicorn to the `available` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: green">**POST**</span>](#busy)       | [`/api/busy`](#busy)       | Set the unicorn to the `busy` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: green">**POST**</span>](#away)       | [`/api/away`](#away)       | Set the unicorn to the `away` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: green">**POST**</span>](#reset)      | [`/api/reset`](#reset)      | Resets the status overwrite setting. This way, the [`/api/switch`](#rgb) can be called again. |
 
 ## <a id="on"></a> Set the Unicorn to On
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**GET**</span>    | `/api/on` |
+| <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/on` |
 
 ### Description
+
 The simpelest method there is.  It turns the Unicorn Hat on to a random colour.
 
 ### Result
@@ -94,12 +110,14 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint   |
 |:-------------------------------------------:|------------|
-| <span style="color: blue">**GET**</span>    | `/api/off` |
+| <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/off` |
 
 ### Description
+
 Another really simple method.  This Turns the Unicorn Hat off.
 
 ### Result
+
 Returns `200 OK` and an Empty JSON Object `{}`
 
 ## <a id="status"></a> Get the server Status
@@ -206,23 +224,71 @@ Optionally you can also specify the blink speed.  This specifies the speed in se
 
 Returns `200 OK` and an Empty JSON Object `{}`
 
-## <a id="shutdown"></a> Shutdown the Pi
 
-| Method                                       | Endpoint         |
-|:--------------------------------------------:|------------------|
-| <span style="color: red">**DELETE**</span>   | `/api/shutdown`  |
+## <a id="available"></a> Set the Unicorn to available
+
+| Method                                      | Endpoint  |
+|:-------------------------------------------:|-----------|
+| <span style="color: blue">**POST**</span>    | `/api/available` |
 
 ### Description
 
-The most useful addition for a headless device.  The busylight-server ultimately runs on a small linux computer and they do prefer to be shutdown properly.  This method is all about doing that safely.  Simply send a delete request to `/api/shutdown` and it will kick off a 2 minute count down to shutdown.  The Unicorn will start to a fading yellow effect to indicate its shutting down.  At 10 seconds from shutdown it will start flash red and a few seconds later the Unicorn will go blank.  It should be safe to unplug the Pi once the display is blank.
+Overrides the status to `available`. This way, any call coming in to the [`/api/switch`](#rgb) endpoint will be ignored. You will have to call the [`/api/reset`](#reset) endpoint in order to remove the override.
 
 ### Result
 
 Returns `200 OK` and an Empty JSON Object `{}`
 
+
+## <a id="busy"></a> Set the Unicorn to busy
+
+| Method                                      | Endpoint  |
+|:-------------------------------------------:|-----------|
+| <span style="color: blue">**POST**</span>    | `/api/busy` |
+
+### Description
+
+Overrides the status to `busy`. This way, any call coming in to the [`/api/switch`](#rgb) endpoint will be ignored. You will have to call the [`/api/reset`](#reset) endpoint in order to remove the override.
+
+### Result
+
+Returns `200 OK` and an Empty JSON Object `{}`
+
+
+## <a id="away"></a> Set the Unicorn to away
+
+| Method                                      | Endpoint  |
+|:-------------------------------------------:|-----------|
+| <span style="color: blue">**POST**</span>    | `/api/away` |
+
+### Description
+
+Overrides the status to `away`. This way, any call coming in to the [`/api/switch`](#rgb) endpoint will be ignored. You will have to call the [`/api/reset`](#reset) endpoint in order to remove the override.
+
+### Result
+
+Returns `200 OK` and an Empty JSON Object `{}`
+
+
+## <a id="reset"></a> Set the Unicorn to reset
+
+| Method                                      | Endpoint  |
+|:-------------------------------------------:|-----------|
+| <span style="color: blue">**POST**</span>    | `/api/reset` |
+
+### Description
+
+Resets the status override state so that the [`/api/switch`](#rgb) endpoint will not ignore color/status changes.
+
+### Result
+
+Returns `200 OK` and an Empty JSON Object `{}`
+
+
 # Todo
 
 - [ ] Add support for the [Unicorn Hat](https://shop.pimoroni.com/products/unicorn-hat)
+- [x] Add front-end
 
 # License
 

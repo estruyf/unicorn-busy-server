@@ -1,5 +1,6 @@
 unicornhat
 unicornhatmini
 flask
+flask_cors
 gpiozero
 jsmin

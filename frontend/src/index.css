@@ -1,0 +1,15 @@
+/* Main styles */
+
+form {
+	margin-bottom: 0.2em;
+}
+
+p {
+	margin-bottom: 1em;
+}
+
+.rainbow {
+  color: #000;
+  text-shadow: 1px 1px #fff;
+	background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+}
