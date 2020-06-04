@@ -121,27 +121,27 @@ def shutdownPi():
 	os.system("shutdown +1 'Shutdown trigger via API... Shutting down in 2 minute'")
 
 def displayRainbow(step, brightness, speed, run = None, hue = None):
-		global crntColors
-		if hue == None:
+	global crntColors
+	if hue == None:
+		hue = 0
+	if step == None:
+		step = 1
+	if speed == None:
+		speed = 0.2
+	if brightness == None:
+		brightness = 0.5
+	crntT = threading.currentThread()
+	while getattr(crntT, "do_run", True):
+		unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
+		sleep(speed)
+		if hue >= 360:
 			hue = 0
-		if step == None:
-			step = 1
-		if speed == None:
-			speed is 0.2
-		if brightness == None:
-			brightness = 0.5
-		crntT = threading.currentThread()
-		while getattr(crntT, "do_run", True):
-			unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
-			sleep(speed)
-			if hue >= 360:
-				hue = 0
-				if run is not None:
-					run = run - 1
-					if run <= 0:
-						switchOff()
-			else:
-				hue = hue + step
+			if run is not None:
+				run = run - 1
+				if run <= 0:
+					switchOff()
+		else:
+			hue = hue + step
 
 def setTimestamp():
 	global globalLastCalled
