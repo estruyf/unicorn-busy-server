@@ -139,6 +139,7 @@ def setTimestamp():
 # API Initialization
 @app.route('/', methods=['GET'])
 def root():
+	print(app.static_folder)
 	return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/on', methods=['GET', 'POST'])
