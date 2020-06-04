@@ -221,7 +221,7 @@ def availableCall():
 	return make_response(jsonify())
 
 @app.route('/api/busy', methods=['POST'])
-def availableCall():
+def busyCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = True
 	globalStatus='Busy'
@@ -234,7 +234,7 @@ def availableCall():
 	return make_response(jsonify())
 
 @app.route('/api/away', methods=['POST'])
-def availableCall():
+def awayCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = True
 	globalStatus='Away'
@@ -247,7 +247,7 @@ def availableCall():
 	return make_response(jsonify())
 
 @app.route('/api/reset', methods=['POST'])
-def availableCall():
+def resetCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = False
 	return make_response(jsonify())
