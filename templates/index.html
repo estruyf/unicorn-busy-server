@@ -49,29 +49,26 @@
 					{% endif %}
 				</h2>
 				<p></p>
-				<form action="/available" method="POST">
+				<form action="/api/available" method="POST">
 					<button class="btn btn-success btn-lg btn-block"><b>AVAILABLE</b></button>
 				</form>
-				<form action="/away" method="POST">
+				<form action="/api/away" method="POST">
 					<button class="btn btn-warning btn-lg btn-block"><b>AWAY</b></button>
 				</form>
-				<form action="/busy" method="POST">
+				<form action="/api/busy" method="POST">
 					<button class="btn btn-danger btn-lg btn-block"><b>BUSY</b></button>
 				</form>
-				<form action="/rainbow" method="POST">
+				<form action="/api/rainbow" method="POST">
 					<button class="btn btn-secondary btn-lg btn-block rain"><b>Rainbow</b></button>
 				</form>
 				<p></p>
-				<form action="/on">
+				<form action="/api/on">
 					<button class="btn btn-outline-success btn-lg btn-block">On</button>
 				</form>
-				<form action="/off">
+				<form action="/api/off">
 					<button class="btn btn-outline-dark btn-lg btn-block">Off</button>
 				</form>
 				<p></p>
-				<form action="/shutdown" method="POST">
-					<button class="btn btn-outline-danger btn-lg btn-block">Shutdown Pi</button>
-				</form>
 			</div>
 		</div>
 	</div>
