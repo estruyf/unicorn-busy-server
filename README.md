@@ -17,22 +17,27 @@
 
 # Introduction
 
-OK this is my branch of the unicorn-busy-server.  I've made some updates to support both the [Unicorn Phat](https://shop.pimoroni.com/products/unicorn-phat) and [Unicorn Mini](https://shop.pimoroni.com/products/unicorn-hat-mini) from [Pimoroni](https://shop.pimoroni.com/).  I have also add the following features:
+This is a project to create a busy light from both the Pimoroni [Unicorn Phat](https://shop.pimoroni.com/products/unicorn-phat) and [Unicorn Mini](https://shop.pimoroni.com/products/unicorn-hat-mini).
 
-* Updated install script to make installation simple and repeatable
-* HSV support for homebridge RGB lighting support
+The service itself has the following features:
+
+* Installation script to simplify the process
+* APIs for turning the Unicorn on/off
+* APIs for changing the colors
 * Rainbow effect
-* Startup and Shutdown actions to tell you what your Pi status light is doing
+* Front-end to show the current status and manually set its status
 
 # Installation
 
-OK this bit is hopefully the easy bit.  You can just copy and paste the following in to a terminal and it will install all the required files, enable and start the service.  If you are running Raspbian or Ubuntu The short version is:
+In order to install this on your Raspberry Pi, you can follow the next steps:
+
+Copy and paste the following in to a terminal. It will install all the required files, enable, and start the service.  If you are running Raspbian or Ubuntu, you can use the following installation command:
 
 ```bash
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh | sudo bash -
 ```
 
-If you have trust issue like many do you'll probably want to do the following:
+If there might be a trust issue while running the command, you could try the following:
 
 ```bash
 cd /tmp
@@ -41,9 +46,9 @@ cat install | more # So you can see the contents of the script a page at time
 sudo bash ./install.sh -V -i /home/pi/unicorn-busy-server
 ```
 
-Currently the script only runs on Raspbian/Ubuntu I am accepting pull requests to extend the PR to support other distributions.  I plan to add support for Debian shortly.
+Currently the script only runs on Raspbian/Ubuntu I am accepting pull requests to extend the PR to support other distributions.
 
-If you want to clone/fork this repo and carry on development on a more sensible machine you can install the required files without needing to install the service by doing the following:
+If you want to clone/fork this repo and carry on development on a more sensible machine, you can install the required files without needing to install the service by doing the following:
 
 ```bash
 curl -LSs https://raw.githubusercontent.com/estruyf/unicorn-busy-server/master/install.sh
@@ -67,7 +72,11 @@ Usage:
 
 # Usage
 
-If you've run the install script (without the -d option) check the Unicorn hat attache to your Pi.  If all has gone according to plan the unicorn hat will be changing colours.  Once its going through all 360 Hues within the HSV spectrum it'll go blank.  As soon as the Uniron hat lights up the `Busylight Server` is ready to start recieving commands.
+If you've run the install script (without the -d option) check the Unicorn hat attache to your Pi.  If all has gone according to plan the unicorn hat will be changing colours.  Once its going through all 360 Hues within the HSV spectrum it'll go blank.  As soon as the Uniron hat lights up the `Busylight Server` is ready to start receiving commands.
+
+The front-end is available via `http://<your-ip>:5000/`.
+
+![Front-end](./assets/frontend.png)
 
 The API is fairly simple though has been extend quite a bit from its oriignal implementation.  The Busy server has the following API endpoing:
 
@@ -90,6 +99,7 @@ The API is fairly simple though has been extend quite a bit from its oriignal im
 | <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/on` |
 
 ### Description
+
 The simpelest method there is.  It turns the Unicorn Hat on to a random colour.
 
 ### Result
@@ -103,9 +113,11 @@ Returns `200 OK` and an Empty JSON Object `{}`
 | <span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>    | `/api/off` |
 
 ### Description
+
 Another really simple method.  This Turns the Unicorn Hat off.
 
 ### Result
+
 Returns `200 OK` and an Empty JSON Object `{}`
 
 ## <a id="status"></a> Get the server Status
