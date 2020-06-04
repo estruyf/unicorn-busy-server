@@ -113,13 +113,6 @@ def countDown(time):
 	unicorn.clear()
 	unicorn.off()
 
-def shutdownPi():
-	global blinkThread
-	blinkThread = threading.Thread(target=countDown, args=(60,))
-	blinkThread.do_run = True
-	blinkThread.start()
-	os.system("shutdown +1 'Shutdown trigger via API... Shutting down in 2 minute'")
-
 def displayRainbow(step, brightness, speed, run = None, hue = None):
 	global crntColors
 	if hue == None:
@@ -132,6 +125,7 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 		brightness = 0.5
 	crntT = threading.currentThread()
 	while getattr(crntT, "do_run", True):
+		print(hue)
 		unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
 		sleep(speed)
 		if hue >= 360:
