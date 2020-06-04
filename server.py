@@ -184,11 +184,11 @@ def apiSwitch():
     if red is None or green is None or blue is None:
         return make_response(jsonify({'error': 'red, green and blue must be present and can\' be empty'}), 500)
 
-		if red is 0 and green is 144 and blue is 0:
+		if red == 0 and green == 144 and blue == 0:
 				globalStatus = 'Available'
-		elif red is 255 and green is 191 and blue is 0:
+		elif red == 255 and green == 191 and blue == 0:
 				globalStatus = 'Away'
-		elif red is 179 and green is 0 and blue is 0:
+		elif red == 179 and green == 0 and blue == 0:
 				globalStatus = 'Busy'
 		else:
 				globalStatus = None
