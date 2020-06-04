@@ -154,27 +154,33 @@ def root():
 
 @app.route('/api/on', methods=['GET'])
 def apiOn():
-	global globalStatus, globalLastCalledApi
+	global globalStatusOverwrite, globalStatus, globalLastCalledApi
+	globalStatusOverwrite = False
 	globalStatus = 'on'
 	globalLastCalledApi = '/api/on'
 	switchOff()
 	switchOn()
 	setTimestamp()
-	return jsonify({})
+	return make_response(jsonify({}))
 
 @app.route('/api/off', methods=['GET'])
 def apiOff():
-	global crntColors, globalStatus, globalLastCalledApi
+	global crntColors, globalStatusOverwrite, globalStatus, globalLastCalledApi
+	globalStatusOverwrite = False
 	globalStatus = 'off'
 	globalLastCalledApi = '/api/off'
 	crntColors = None
 	switchOff()
 	setTimestamp()
-	return jsonify({})
+	return make_response(jsonify({}))
 
 @app.route('/api/switch', methods=['POST'])
 def apiSwitch():
-	global blinkThread, globalStatus, globalLastCalledApi
+	global blinkThread, globalStatusOverwrite, globalStatus, globalLastCalledApi
+
+	if globalStatusOverwrite:
+		return make_response(jsonify({}))
+
 	globalLastCalledApi = '/api/switch'
 	switchOff()
 	content = json.loads(jsmin(request.get_data(as_text=True)))
@@ -199,6 +205,51 @@ def apiSwitch():
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()
+	return make_response(jsonify())
+
+@app.route('/api/available', methods=['POST'])
+def availableCall():
+    global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
+	globalStatusOverwrite = True
+	globalStatus='Available'
+    globalLastCalledApi='/api/available'
+    switchOff()
+    blinkThread = threading.Thread(target=setColor, args=(0, 144, 0))
+    blinkThread.do_run = True
+    blinkThread.start()
+    setTimestamp()
+	return make_response(jsonify())
+
+@app.route('/api/busy', methods=['POST'])
+def availableCall():
+    global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
+	globalStatusOverwrite = True
+	globalStatus='Busy'
+    globalLastCalledApi='/api/busy'
+    switchOff()
+    blinkThread = threading.Thread(target=setColor, args=(255, 191, 0))
+    blinkThread.do_run = True
+    blinkThread.start()
+    setTimestamp()
+	return make_response(jsonify())
+
+@app.route('/api/away', methods=['POST'])
+def availableCall():
+    global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
+	globalStatusOverwrite = True
+	globalStatus='Away'
+    globalLastCalledApi='/api/away'
+    switchOff()
+    blinkThread = threading.Thread(target=setColor, args=(179, 0, 0))
+    blinkThread.do_run = True
+    blinkThread.start()
+    setTimestamp()
+	return make_response(jsonify())
+
+@app.route('/api/reset', methods=['POST'])
+def availableCall():
+    global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
+	globalStatusOverwrite = False
 	return make_response(jsonify())
 
 @app.route('/api/rainbow', methods=['POST'])
