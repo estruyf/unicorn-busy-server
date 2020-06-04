@@ -125,7 +125,6 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 		brightness = 0.5
 	crntT = threading.currentThread()
 	while getattr(crntT, "do_run", True):
-		print(hue)
 		unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
 		sleep(speed)
 		if hue >= 360:
