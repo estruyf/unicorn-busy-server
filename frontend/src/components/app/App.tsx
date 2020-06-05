@@ -59,25 +59,25 @@ export function App() {
       </section>
 
       <section className="row mt-4">
-			  <div className="col">
+			  <div className="col-sm-12 col-md-6 col-lg-3 mb-4">
 			    <StatusButton apiUrl={"/api/available"} className={"btn-success"} text={"Available"} callApi={callApi} />
         </div>
-        <div className="col">
+        <div className="col-sm-12 col-md-6 col-lg-3 mb-4">
 			    <StatusButton apiUrl={"/api/busy"} className={"btn-danger"} text={"Busy"} callApi={callApi} />
         </div>
-        <div className="col">
+        <div className="col-sm-12 col-md-6 col-lg-3 mb-4">
 			    <StatusButton apiUrl={"/api/away"} className={"btn-warning"} text={"Away"} callApi={callApi} />
         </div>
-        <div className="col">
+        <div className="col-sm-12 col-md-6 col-lg-3 mb-4">
 			    <StatusButton apiUrl={"/api/rainbow"} className={"btn-secondary rainbow"} text={"Rainbow"} callApi={callApi} />
         </div>
       </section>
 
-      <section className="row mt-4">
-			  <div className="col">
+      <section className="row">
+			  <div className="col-sm-12 col-md-6 mb-4">
           <StatusButton apiUrl={"/api/on"} className={"btn-outline-success"} text={"On"} callApi={callApi} />
         </div>
-        <div className="col">
+        <div className="col-sm-12 col-md-6 mb-4">
           <StatusButton apiUrl={"/api/off"} className={"btn-outline-dark"} text={"Off"} callApi={callApi} />
         </div>
       </section>
