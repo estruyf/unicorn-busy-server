@@ -5,6 +5,7 @@ import json
 import os
 import threading
 import math
+import colorsys
 from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
@@ -125,23 +126,26 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 	if brightness == None:
 		brightness = 0.5
 	crntT = threading.currentThread()
-	step = 0
+	i = 0.0
+	offset = 30
 	while getattr(crntT, "do_run", True):
-		step += 1
+		i = i + 0.3
 		unicorn.setBrightness(brightness)
 		for x in range(0, width):
 			for y in range(0, height):
-				dx = (math.sin(step / width + 20) * width) + height
-				dy = (math.cos(step / height) * height) + height
-				sc = (math.cos(step / height) * height) + width
+				r = 0 #x * 32
+				g = 0 #y * 32
+				xy = x + y / 4
+				r = (math.cos((x+i)/2.0) + math.cos((y+i)/2.0)) * 64.0 + 128.0
+				g = (math.sin((x+i)/1.5) + math.sin((y+i)/2.0)) * 64.0 + 128.0
+				b = (math.sin((x+i)/2.0) + math.cos((y+i)/1.5)) * 64.0 + 128.0
+				r = max(0, min(255, r + offset))
+				g = max(0, min(255, g + offset))
+				b = max(0, min(255, b + offset))
+				unicorn.set_pixel(x,y,int(r),int(g),int(b))
 
-				hue = math.sqrt(math.pow(x - dx, 2) + math.pow(y - dy, 2)) / sc
-				r, g, b = [int(c * 255) for c in hsv_to_rgb(hue, 1, 1)]
-
-				unicorn.setPixel(x, y, r, g, b)
-
-				unicorn.show()
-				time.sleep(speed)
+		unicorn.show()
+		time.sleep(speed)
 
 def setTimestamp():
 	global globalLastCalled
