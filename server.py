@@ -120,17 +120,27 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 	if step == None:
 		step = 1
 	if speed == None:
-		speed = 0.2
+		speed = 0.01
 	if brightness == None:
 		brightness = 0.5
 	crntT = threading.currentThread()
+	step = 0
 	while getattr(crntT, "do_run", True):
-		unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
-		sleep(speed)
-		if hue >= 360:
-			hue = 0
-		else:
-			hue = hue + step
+		step += 1
+		unicorn.set_brightness(brightness)
+		for x in range(0, width):
+			for y in range(0, height):
+				dx = (math.sin(step / width + 20) * width) + height
+				dy = (math.cos(step / height) * height) + height
+				sc = (math.cos(step / height) * height) + width
+
+				hue = math.sqrt(math.pow(x - dx, 2) + math.pow(y - dy, 2)) / sc
+				r, g, b = [int(c * 255) for c in hsv_to_rgb(hue, 1, 1)]
+
+				unicorn.set_pixel(x, y, r, g, b)
+
+				unicorn.show()
+				time.sleep(speed)
 
 def setTimestamp():
 	global globalLastCalled
