@@ -142,7 +142,7 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 				r = max(0, min(255, r + offset))
 				g = max(0, min(255, g + offset))
 				b = max(0, min(255, b + offset))
-				unicorn.set_pixel(x,y,int(r),int(g),int(b))
+				unicorn.setPixel(x,y,int(r),int(g),int(b))
 
 		unicorn.show()
 		time.sleep(speed)
