@@ -4,6 +4,7 @@ import json
 
 import os
 import threading
+import math
 from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
