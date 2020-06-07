@@ -4,6 +4,8 @@ import json
 
 import os
 import threading
+import math
+import colorsys
 from time import sleep
 from datetime import datetime
 from gpiozero import CPUTemperature
@@ -113,24 +115,33 @@ def countDown(time):
 	unicorn.clear()
 	unicorn.off()
 
-def displayRainbow(step, brightness, speed, run = None, hue = None):
+def displayRainbow(brightness, speed, run = None):
 	global crntColors
-	if hue == None:
-		hue = 0
-	if step == None:
-		step = 1
 	if speed == None:
-		speed = 0.2
+		speed = 0.01
 	if brightness == None:
 		brightness = 0.5
 	crntT = threading.currentThread()
+	i = 0.0
+	offset = 30
 	while getattr(crntT, "do_run", True):
-		unicorn.setColour(RGB = unicorn.hsvIntToRGB(hue,100,100))
+		i = i + 0.3
+		unicorn.setBrightness(brightness)
+		for x in range(0, width):
+			for y in range(0, height):
+				r = 0 #x * 32
+				g = 0 #y * 32
+				xy = x + y / 4
+				r = (math.cos((x+i)/2.0) + math.cos((y+i)/2.0)) * 64.0 + 128.0
+				g = (math.sin((x+i)/1.5) + math.sin((y+i)/2.0)) * 64.0 + 128.0
+				b = (math.sin((x+i)/2.0) + math.cos((y+i)/1.5)) * 64.0 + 128.0
+				r = max(0, min(255, r + offset))
+				g = max(0, min(255, g + offset))
+				b = max(0, min(255, b + offset))
+				unicorn.setPixel(x,y,int(r),int(g),int(b))
+
+		unicorn.show()
 		sleep(speed)
-		if hue >= 360:
-			hue = 0
-		else:
-			hue = hue + step
 
 def setTimestamp():
 	global globalLastCalled
@@ -250,11 +261,9 @@ def apiDisplayRainbow():
 	switchOff()
 	data = request.get_data(as_text=True)
 	content = json.loads(jsmin(request.get_data(as_text=True)))
-	hue = content.get('hue', 0)
-	step = content.get('step', None)
 	brightness = content.get('brightness', None)
 	speed = content.get('speed', None)
-	blinkThread = threading.Thread(target=displayRainbow, args=(step, brightness, speed, None, hue))
+	blinkThread = threading.Thread(target=displayRainbow, args=(brightness, speed, None))
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()
