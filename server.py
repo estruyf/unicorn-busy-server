@@ -115,12 +115,8 @@ def countDown(time):
 	unicorn.clear()
 	unicorn.off()
 
-def displayRainbow(step, brightness, speed, run = None, hue = None):
+def displayRainbow(brightness, speed, run = None):
 	global crntColors
-	if hue == None:
-		hue = 0
-	if step == None:
-		step = 1
 	if speed == None:
 		speed = 0.01
 	if brightness == None:
@@ -265,11 +261,9 @@ def apiDisplayRainbow():
 	switchOff()
 	data = request.get_data(as_text=True)
 	content = json.loads(jsmin(request.get_data(as_text=True)))
-	hue = content.get('hue', 0)
-	step = content.get('step', None)
 	brightness = content.get('brightness', None)
 	speed = content.get('speed', None)
-	blinkThread = threading.Thread(target=displayRainbow, args=(step, brightness, speed, None, hue))
+	blinkThread = threading.Thread(target=displayRainbow, args=(brightness, speed, None))
 	blinkThread.do_run = True
 	blinkThread.start()
 	setTimestamp()

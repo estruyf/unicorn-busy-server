@@ -181,8 +181,6 @@ Example request JSON:
 
 ```jsonc
 {
-    "hue": 0,               // Optional
-    "step": 1,              // Optional
     "brightness": 0.5,      // Optional
     "speed": 1              // Optional
 }
