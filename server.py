@@ -145,7 +145,7 @@ def displayRainbow(step, brightness, speed, run = None, hue = None):
 				unicorn.setPixel(x,y,int(r),int(g),int(b))
 
 		unicorn.show()
-		time.sleep(speed)
+		sleep(speed)
 
 def setTimestamp():
 	global globalLastCalled
