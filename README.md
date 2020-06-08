@@ -46,7 +46,7 @@ cat install | more # So you can see the contents of the script a page at time
 sudo bash ./install.sh -V -i /home/pi/unicorn-busy-server
 ```
 
-Currently the script only runs on Raspbian/Ubuntu I am accepting pull requests to extend the PR to support other distributions.
+> **Important**: Currently the script only runs on Raspbian/Ubuntu. Feel free to submit a pull request to extend the PR to support other distributions. Or you can make use of the old installation script: `install-fallback.sh`.
 
 If you want to clone/fork this repo and carry on development on a more sensible machine, you can install the required files without needing to install the service by doing the following:
 
