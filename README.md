@@ -87,10 +87,10 @@ The API is fairly simple though has been extend quite a bit from its oriignal im
 | [<span style="color: blue">**GET**</span>](#status)       | [`/api/status`](#status)     | Get the status of the Unicorn Hat/Pi                                 |
 | [<span style="color: green">**POST**</span>](#rainbow)    | [`/api/rainbow`](#rainbow)   | Set the unicorn to cycle through all 360 hues in the HSV spectrum    |
 | [<span style="color: green">**POST**</span>](#rgb)        | [`/api/switch`](#rgb)        | Set the unicorn to a specific colour using RGB Integer values        |
-| [<span style="color: green">**POST**</span>](#available)  | [`/api/available`](#available)  | Set the unicorn to the `available` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
-| [<span style="color: green">**POST**</span>](#busy)       | [`/api/busy`](#busy)       | Set the unicorn to the `busy` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
-| [<span style="color: green">**POST**</span>](#away)       | [`/api/away`](#away)       | Set the unicorn to the `away` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
-| [<span style="color: green">**POST**</span>](#reset)      | [`/api/reset`](#reset)      | Resets the status overwrite setting. This way, the [`/api/switch`](#rgb) can be called again. |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#available)  | [`/api/available`](#available)  | Set the unicorn to the `available` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#busy)       | [`/api/busy`](#busy)       | Set the unicorn to the `busy` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#away)       | [`/api/away`](#away)       | Set the unicorn to the `away` status color. This overwrites the status. Call [`/api/switch`](#reset) to turn off.  |
+| [<span style="color: blue">**GET**</span> <span style="color: green">**POST**</span>](#reset)      | [`/api/reset`](#reset)      | Resets the status overwrite setting. This way, the [`/api/switch`](#rgb) can be called again. |
 
 ## <a id="on"></a> Set the Unicorn to On
 
@@ -227,7 +227,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**POST**</span>    | `/api/available` |
+| <span style="color: blue">**GET**</span> <span style="color: blue">**POST**</span>    | `/api/available` |
 
 ### Description
 
@@ -242,7 +242,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**POST**</span>    | `/api/busy` |
+| <span style="color: blue">**GET**</span> <span style="color: blue">**POST**</span>    | `/api/busy` |
 
 ### Description
 
@@ -257,7 +257,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**POST**</span>    | `/api/away` |
+| <span style="color: blue">**GET**</span> <span style="color: blue">**POST**</span>    | `/api/away` |
 
 ### Description
 
@@ -272,7 +272,7 @@ Returns `200 OK` and an Empty JSON Object `{}`
 
 | Method                                      | Endpoint  |
 |:-------------------------------------------:|-----------|
-| <span style="color: blue">**POST**</span>    | `/api/reset` |
+| <span style="color: blue">**GET**</span> <span style="color: blue">**POST**</span>    | `/api/reset` |
 
 ### Description
 
