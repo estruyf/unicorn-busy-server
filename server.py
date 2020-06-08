@@ -208,7 +208,7 @@ def apiSwitch():
 	setTimestamp()
 	return make_response(jsonify())
 
-@app.route('/api/available', methods=['POST'])
+@app.route('/api/available', methods=['GET', 'POST'])
 def availableCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = True
@@ -221,7 +221,7 @@ def availableCall():
 	setTimestamp()
 	return make_response(jsonify())
 
-@app.route('/api/busy', methods=['POST'])
+@app.route('/api/busy', methods=['GET', 'POST'])
 def busyCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = True
@@ -234,7 +234,7 @@ def busyCall():
 	setTimestamp()
 	return make_response(jsonify())
 
-@app.route('/api/away', methods=['POST'])
+@app.route('/api/away', methods=['GET', 'POST'])
 def awayCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = True
@@ -247,7 +247,7 @@ def awayCall():
 	setTimestamp()
 	return make_response(jsonify())
 
-@app.route('/api/reset', methods=['POST'])
+@app.route('/api/reset', methods=['GET', 'POST'])
 def resetCall():
 	global globalStatusOverwrite, globalStatus, globalLastCalledApi, blinkThread
 	globalStatusOverwrite = False
