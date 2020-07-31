@@ -78,7 +78,7 @@ The front-end is available via `http://<your-ip>:5000/`.
 
 ![Front-end](./assets/frontend.png)
 
-The API is fairly simple though has been extend quite a bit from its oriignal implementation.  The Busy server has the following API endpoing:
+The API is fairly simple though has been extend quite a bit from its orignal implementation.  The Busy server has the following API endpoing:
 
 | Method                                                    | Endpoint                     | Description                                                          |
 |:---------------------------------------------------------:|------------------------------|----------------------------------------------------------------------|
