@@ -3,7 +3,7 @@ Description=BusyLight
 After=network.target
 
 [Service]
-User=pi
+User=root
 WorkingDirectory=/home/pi/unicorn-busy-server
 ExecStart=python3 server.py
 Restart=always
